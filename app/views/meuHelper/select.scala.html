@@ -1,0 +1,11 @@
+@(nome:String, value:String, label:String)
+
+  <div class="input-field col s12">
+    <select name="@nome">
+      <option value="" disabled selected>Choose your option</option>
+       @for(nome <- nome) {
+          <option id="@nome" value="@value" {selected}>@value</option>
+      }
+    </select>
+    <label>"@label</label>
+  </div>

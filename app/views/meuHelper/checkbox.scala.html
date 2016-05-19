@@ -1,0 +1,5 @@
+@(nome:String, value:String, label:String)
+
+<input type="checkbox" name="@nome" id="@nome" value="@value"
+@if(value == "true") {checked="checked"} else {checked=""}>
+<label for ="@nome">@label</label>

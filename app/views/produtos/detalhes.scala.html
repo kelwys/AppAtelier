@@ -1,0 +1,25 @@
+@(formProduto: Form[Produto], id:Long, categorias:List[Categoria])
+@import meuHelper._
+@main("Formulário de Produto") {
+<div style="padding:30px;">
+	<h5>Formulário de Produto</h5>
+	@meuHelper.meuForm("produtos", routes.Produtos.salvar(id), "post"){
+		<fieldset>
+		<legend>Produto (@formProduto("nome").valueOr("Novo"))</legend>
+		@meuHelper.inputText("codigoBarras", formProduto("codigoBarras").value, "Codigo de Barras:", "text")
+		@meuHelper.inputText("nome", formProduto("nome").value, "Nome:", "text")
+		@meuHelper.inputText("descricao", formProduto("descricao").value, "Descrição:", "text")
+		@meuHelper.inputFile(formProduto("foto").value, "Foto")
+		@meuHelper.inputText("quantidadeEstoque", formProduto("quantidadeEstoque").value, "Quantidade:", "text")
+		@meuHelper.inputText("preco", formProduto("preco").value, "Preço:", "text")
+		<select class="browser-default" name="categoria.id">
+			<option value="" disabled selected>Selecione uma Categoria</option>
+	    	@for(categoria <- categorias){
+	    		<option value="@(categoria.id)" @{if (formProduto("categoria.id") == categoria.id) "selected" else ""}>@(categoria.descricao)</option>
+	        } 
+	    </select>
+		</fieldset>
+		<input type="submit" class="btn btn-primary" value="Salvar">
+		<a href="@routes.Produtos.lista()"><button type="button" class="btn btn-primary-outline">Cancelar</button></a>
+	}
+}

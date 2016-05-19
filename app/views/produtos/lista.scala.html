@@ -1,0 +1,41 @@
+@(produtos: List[Produto])
+@main("Catalogo de Produtos") {
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<div style="padding:30px;"> 
+<h4>Todos os produtos</h4>
+<a href="/produtos/novo"><button type="button" class="btn btn-primary-outline">Novo</button></a>
+<div class="table table-responsive col-md-7">
+	<table class="highlight">
+		<thead>
+			<tr>
+				<th>ID</th>
+				<th>CODIGO DE BARRAS</th>
+				<th>NOME</th>
+				<th>DESCRICAO</th>
+				<th>FOTO</th>
+				<th>QTD</th>
+				<th>PREÇO</th>
+				<th>CATEGORIA</th>
+				
+			</tr>
+		</thead>
+		<tbody>
+		@for(produto <- produtos) {
+			<tr>
+				<td>@produto.id</td>
+				<td>@produto.codigoBarras</td>
+				<td>@produto.nome</td>
+				<td>@produto.descricao</td>
+				<td>@produto.foto</td>
+				<td>@produto.quantidadeEstoque</td>
+				<td>@produto.preco</td>
+				<td>@produto.categoria</td>
+				<td><a href="@routes.Produtos.remover(produto.id)" ><input type="submit" class="btn btn-primary" value="Remover"></a></td>
+				<td><a href="@routes.Produtos.detalhes(produto.id)"><input type="submit" class="btn btn-primary" value="Editar"></a></td>
+			</tr>
+		}
+		</tbody>
+	</table>
+</div>
+
+}
