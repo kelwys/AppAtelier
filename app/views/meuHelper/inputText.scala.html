@@ -1,4 +1,5 @@
-@(nome:String, value:String, label:String, tipo:String)
+@(nome:String, value:String, label:String, tipo:String="text")
+
 <label for ="@nome">@label</label>
-<input id="@nome" type="@tipo" class="validate">
+<input type="@tipo" name="@nome" id="@nome" value="@value">
 
