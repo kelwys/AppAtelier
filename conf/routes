@@ -9,7 +9,7 @@ GET     /                           controllers.Application.index()
 GET     /produtos/                           controllers.Produtos.lista()
 GET     /produtos/novo                       controllers.Produtos.novoProduto()
 GET     /produtos/:id			             controllers.Produtos.detalhes(id: Long)
-POST    /produtos/:id                        controllers.Produtos.salvar(id: Long)
+POST    /produtos/                           controllers.Produtos.salvar(id: Long)
 GET     /produtos/remover/:id                controllers.Produtos.remover(id: Long)
 
 

@@ -31,7 +31,7 @@ public class Produto extends Model{
 	@ManyToOne
     public Categoria categoria;
 	
-	public byte[] foto;
+	public String foto;
 	
 	public double preco;
 	

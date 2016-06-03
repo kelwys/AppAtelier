@@ -57,7 +57,7 @@ create table produto (
   nome                      varchar(255),
   descricao                 varchar(255),
   categoria_id              bigint,
-  foto                      varbinary(255),
+  foto                      varchar(255),
   preco                     double,
   quantidade_estoque        bigint,
   constraint pk_produto primary key (id))

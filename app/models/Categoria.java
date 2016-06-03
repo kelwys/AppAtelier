@@ -26,6 +26,9 @@ public class Categoria extends Model {
 	@OneToMany(mappedBy="categoria")
 	public List<Produto> produtos = new ArrayList<>();
 
+	public String toString(){
+		return descricao;
+	}
 	
 	public static Finder<Long, Categoria> find = new Finder<Long,Categoria>(Categoria.class);
 
