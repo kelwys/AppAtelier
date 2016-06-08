@@ -12,7 +12,12 @@ GET     /produtos/:id			             controllers.Produtos.detalhes(id: Long)
 POST    /produtos/                           controllers.Produtos.salvar(id: Long)
 GET     /produtos/remover/:id                controllers.Produtos.remover(id: Long)
 
-
+# Rotas para Classe Categorias
+GET     /categorias/                           controllers.Categorias.lista()
+GET     /categorias/novo                       controllers.Categorias.novoCategoria()
+GET     /categorias/:id			             controllers.Categorias.detalhes(id: Long)
+POST    /categorias/                           controllers.Categorias.salvar(id: Long)
+GET     /categorias/remover/:id                controllers.Categorias.remover(id: Long)
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)

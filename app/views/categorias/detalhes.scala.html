@@ -1,0 +1,14 @@
+@(formCategoria: Form[Categoria], id:Long)
+@import meuHelper._
+@main("Formulário de Categoria") {
+<div style="padding:30px;">
+	<h5>Formulário de Categoria</h5>
+	@meuHelper.meuForm("categorias", routes.Categorias.salvar(id), "post"){
+		<fieldset>
+		<legend>Categoria (@formCategoria("nome").valueOr("Novo"))</legend>
+		@meuHelper.inputText("descricao", formCategoria("descricao").value, "Descrição:", "text")
+		</fieldset>
+		<input type="submit" class="btn btn-primary" value="Salvar">
+		<a href="@routes.Categorias.lista()"><button type="button" class="btn btn-primary-outline">Cancelar</button></a>
+	}
+}

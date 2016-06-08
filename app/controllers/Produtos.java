@@ -45,9 +45,7 @@ public class Produtos extends Controller{
 	public Result salvar(Long id){
 
 		Form<Produto> formEnviado = formProduto.bindFromRequest();
-		System.out.println(formEnviado);
 		Produto produto = formEnviado.get();
-		System.out.println(produto);
 		Produto produtoOld = Produto.find.byId(id);
 		if(produtoOld != null){
 			produto.update();

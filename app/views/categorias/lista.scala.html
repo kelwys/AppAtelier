@@ -1,0 +1,29 @@
+@(categorias: List[Categoria])
+@main("Catalogo de Categorias") {
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<div style="padding:30px;"> 
+<h4>Todos os categorias</h4>
+<a href="/categorias/novo"><button type="button" class="btn btn-primary-outline">Novo</button></a>
+<div class="table table-responsive col-md-7">
+	<table class="highlight">
+		<thead>
+			<tr>
+				<th>ID</th>
+				<th>DESCRICAO</th>
+				
+			</tr>
+		</thead>
+		<tbody>
+		@for(categoria <- categorias) {
+			<tr>
+				<td>@categoria.id</td>
+				<td>@categoria.descricao</td>
+				<td><a href="@routes.Categorias.remover(categoria.id)" ><input type="submit" class="btn btn-primary" value="Remover"></a></td>
+				<td><a href="@routes.Categorias.detalhes(categoria.id)"><input type="submit" class="btn btn-primary" value="Editar"></a></td>
+			</tr>
+		}
+		</tbody>
+	</table>
+</div>
+
+}
