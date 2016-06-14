@@ -1,0 +1,49 @@
+@(clientes: List[Cliente])
+@main("Lista de Clientes") {
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<div style="padding:30px;"> 
+<h4>Todos os clientes</h4>
+<a href="/clientes/novo"><button type="button" class="btn btn-primary-outline">Novo</button></a>
+<div class="table table-responsive col-md-7">
+	<table class="highlight">
+		<thead>
+			<tr>
+				<th>ID</th>
+				<th>NOME</th>
+				<th>CPF</th>
+				<th>TELEFONE</th>
+				<th>ENDERECO</th>
+				<th>NUMERO</th>
+				<th>CEP</td>
+				<th>COMPLEMENTO</th>
+				<th>EMAIL</th>
+				<th>PASSWORD</th>
+				<th>DATA NASCIMENTO</th>
+				<th>SEXO</th>
+				
+			</tr>
+		</thead>
+		<tbody>
+		@for(cliente <- clientes) {
+			<tr>
+				<td>@cliente.id</td>
+				<td>@cliente.nome</td>
+				<td>@cliente.cpf</td>
+				<td>@cliente.telefone</td>
+				<td>@cliente.endereco</td>
+				<td>@cliente.numero</td>
+				<td>@cliente.cep</td>
+				<td>@cliente.complemento</td>
+				<td>@cliente.email</td>
+				<td>@cliente.password</td>
+				<td>@cliente.dataNascimento</td>
+				<td>@cliente.sexo</td>
+				<td><a href="@routes.Clientes.remover(cliente.id)" ><input type="submit" class="btn btn-primary" value="Remover"></a></td>
+				<td><a href="@routes.Clientes.detalhes(cliente.id)"><input type="submit" class="btn btn-primary" value="Editar"></a></td>
+			</tr>
+		}
+		</tbody>
+	</table>
+</div>
+
+}

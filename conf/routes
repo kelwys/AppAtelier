@@ -19,5 +19,12 @@ GET     /categorias/:id			             controllers.Categorias.detalhes(id: Long)
 POST    /categorias/                           controllers.Categorias.salvar(id: Long)
 GET     /categorias/remover/:id                controllers.Categorias.remover(id: Long)
 
+# Rotas para Classe Clientes
+GET     /clientes/                           controllers.Clientes.lista()
+GET     /clientes/novo                       controllers.Clientes.novoCliente()
+GET     /clientes/:id			             controllers.Clientes.detalhes(id: Long)
+POST    /clientes/                           controllers.Clientes.salvar(id: Long)
+GET     /clientes/remover/:id                controllers.Clientes.remover(id: Long)
+
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
