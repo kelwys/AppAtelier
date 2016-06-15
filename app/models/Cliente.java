@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 import com.avaje.ebean.Model;
+import com.avaje.ebean.Model.Finder;
 
 import play.data.validation.Constraints.Required;
 
@@ -40,6 +41,8 @@ public class Cliente extends Model{
 	public Date dataNascimento;
 	@Required
 	public char sexo;
+	
+	public static Finder<Long, Cliente> find = new Finder<Long,Cliente>(Cliente.class);
 	
 	@OneToMany(mappedBy="cliente")
 	public List<Pedido> pedidos = new ArrayList<>();
