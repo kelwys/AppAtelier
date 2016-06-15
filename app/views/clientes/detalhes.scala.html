@@ -1,0 +1,26 @@
+@(formCliente: Form[Cliente], id:Long)
+@import meuHelper._
+@main("Formulário de Cliente") {
+<div style="padding:30px;">
+	<h5>Formulário de Cliente</h5>
+	@meuHelper.meuForm("clientes", routes.Clientes.salvar(id), "post"){
+		<fieldset>
+		<legend>Cliente (@formCliente("nome").valueOr("Novo"))</legend>
+		@meuHelper.inputText("nome", formCliente("nome").value, "Nome:", "text")
+		@meuHelper.inputText("cpf", formCliente("cpf").value, "CPF:", "text")
+		@meuHelper.inputText("telefone", formCliente("telefone").value, "Telefone:", "text")
+		@meuHelper.inputText("endereco", formCliente("endereco").value, "Endereco:", "text")
+		@meuHelper.inputText("numero", formCliente("numero").value, "numero:", "text")
+		@meuHelper.inputText("cep", formCliente("cep").value, "CEP:", "text")
+		@meuHelper.inputText("complemento", formCliente("complemento").value, "Complemento:", "text")
+		@meuHelper.inputText("email", formCliente("email").value, "E-mail:", "text")
+		@meuHelper.inputText("password", formCliente("password").value, "Password:", "text")
+		
+		
+	
+		</fieldset>
+		<input type="submit" class="btn btn-primary" value="Salvar">
+		<a href="@routes.Clientes.lista()"><button type="button" class="btn btn-primary-outline">Cancelar</button></a>
+		
+	}
+}
