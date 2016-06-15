@@ -1,0 +1,33 @@
+@(administradores: List[Administrador])
+@main("Catalogo de Administradores") {
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<div style="padding:30px;"> 
+<h4>Todos os administradores</h4>
+<a href="/administradores/novo"><button type="button" class="btn btn-primary-outline">Novo</button></a>
+<div class="table table-responsive col-md-7">
+	<table class="highlight">
+		<thead>
+			<tr>
+				<th>ID</th>
+				<th>NOME</th>
+				<th>EMAIL</th>
+				<th>PASSWORD</th>
+				
+			</tr>
+		</thead>
+		<tbody>
+		@for(administrador <- administradores) {
+			<tr>
+				<td>@administrador.id</td>
+				<td>@administrador.nome</td>
+				<td>@administrador.email</td>
+				<td>@administrador.password</td>
+				<td><a href="@routes.Administradores.remover(administrador.id)" ><input type="submit" class="btn btn-primary" value="Remover"></a></td>
+				<td><a href="@routes.Administradores.detalhes(administrador.id)"><input type="submit" class="btn btn-primary" value="Editar"></a></td>
+			</tr>
+		}
+		</tbody>
+	</table>
+</div>
+
+}

@@ -19,5 +19,11 @@ GET     /categorias/:id			             controllers.Categorias.detalhes(id: Long)
 POST    /categorias/                           controllers.Categorias.salvar(id: Long)
 GET     /categorias/remover/:id                controllers.Categorias.remover(id: Long)
 
+# Rotas para Classe Administradores
+GET     /administradores/                           controllers.Administradores.lista()
+GET     /administradores/novo                       controllers.Administradores.novoAdministrador()
+GET     /administradores/:id			             controllers.Administradores.detalhes(id: Long)
+POST    /administradores/                           controllers.Administradores.salvar(id: Long)
+GET     /administradores/remover/:id                controllers.Administradores.remover(id: Long)
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)

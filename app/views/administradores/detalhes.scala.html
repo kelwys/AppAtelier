@@ -1,0 +1,16 @@
+@(formAdministrador: Form[Administrador], id:Long)
+@import meuHelper._
+@main("Formulário de Administrador") {
+<div style="padding:30px;">
+	<h5>Formulário de Administrador</h5>
+	@meuHelper.meuForm("administradores", routes.Administradores.salvar(id), "post"){
+		<fieldset>
+		<legend>Administrador (@formAdministrador("nome").valueOr("Novo"))</legend>
+		@meuHelper.inputText("nome", formAdministrador("nome").value, "Nome:", "text")
+		@meuHelper.inputText("email", formAdministrador("email").value, "E-mail:", "text")
+		@meuHelper.inputText("password", formAdministrador("password").value, "Password:", "text")
+		</fieldset>
+		<input type="submit" class="btn btn-primary" value="Salvar">
+		<a href="@routes.Administradores.lista()"><button type="button" class="btn btn-primary-outline">Cancelar</button></a>
+	}
+}
