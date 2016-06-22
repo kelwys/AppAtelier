@@ -26,7 +26,7 @@ GET     /administradores/novo                       controllers.Administradores.
 GET     /administradores/:id			             controllers.Administradores.detalhes(id: Long)
 POST    /administradores/                           controllers.Administradores.salvar(id: Long)
 GET     /administradores/remover/:id                controllers.Administradores.remover(id: Long)
-
+#GET     /administradores/AddAdmimWS/              controllers.Administradores.AddAdministradoresWS()
 
 # Rotas para Classe Clientes
 GET     /clientes/                           controllers.Clientes.lista()
@@ -34,6 +34,7 @@ GET     /clientes/novo                       controllers.Clientes.novoCliente()
 GET     /clientes/:id			             controllers.Clientes.detalhes(id: Long)
 POST    /clientes/                           controllers.Clientes.salvar(id: Long)
 GET     /clientes/remover/:id                controllers.Clientes.remover(id: Long)
+
 
 
 # Map static resources from the /public folder to the /assets URL path

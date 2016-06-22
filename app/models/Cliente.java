@@ -40,7 +40,7 @@ public class Cliente extends Model{
 	public String password;
 	public Date dataNascimento;
 	@Required
-	public char sexo;
+	public String sexo;
 	
 	public static Finder<Long, Cliente> find = new Finder<Long,Cliente>(Cliente.class);
 	
