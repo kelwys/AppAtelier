@@ -30,7 +30,7 @@ private final Form<Cliente> formCliente = Form.form(Cliente.class);
 	public Result novoCliente()
 	{
 		List<Cliente> cliente = Cliente.find.all();
-		return ok(views.html.clientes.detalhes.render(formCliente,new Long(0)));
+		return ok(views.html.site.register.render(formCliente,new Long(0)));
 	}
 	
 	public Result detalhes(long id)

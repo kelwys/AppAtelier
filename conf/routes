@@ -3,7 +3,9 @@
 # ~~~~
 
 # Home page
-GET     /                           controllers.Application.index()
+GET     /                                   controllers.Application.index()
+GET     /account/                           controllers.Application.account()
+# GET     /register/                          controllers.Application.register()
 
 # Rotas para Classe Produtos
 GET     /produtos/                           controllers.Produtos.lista()
@@ -15,7 +17,7 @@ GET     /produtos/remover/:id                controllers.Produtos.remover(id: Lo
 # Rotas para Classe Categorias
 GET     /categorias/                           controllers.Categorias.lista()
 GET     /categorias/novo                       controllers.Categorias.novoCategoria()
-GET     /categorias/:id			             controllers.Categorias.detalhes(id: Long)
+GET     /categorias/:id			               controllers.Categorias.detalhes(id: Long)
 POST    /categorias/                           controllers.Categorias.salvar(id: Long)
 GET     /categorias/remover/:id                controllers.Categorias.remover(id: Long)
 

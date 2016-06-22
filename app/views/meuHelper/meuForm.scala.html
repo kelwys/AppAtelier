@@ -1,6 +1,6 @@
-@(nome: String, acao: play.api.mvc.Call, metodo: String)(conteudo: Html)
+@(nome: String, acao: play.api.mvc.Call, metodo: String, enctype: String = "application/x-www-form-urlencoded")(conteudo: Html)
 
-<form name="@nome" action="@acao" method="@metodo">
+<form name="@nome" action="@acao" method="@metodo" enctype="@enctype">
 
 	@conteudo
 
