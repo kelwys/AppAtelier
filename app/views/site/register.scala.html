@@ -219,7 +219,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 				<div class="reg">
 					 <p>Bem-vindo, por favor insira os seguintes dados para continuar.</p>
 					 <p>Se você já possui um cadastro. <a href="@routes.Application.account()">click aqui</a></p>
-					 <form>
+					 
 					 @meuHelper.meuForm("clientes", routes.Clientes.salvar(id), "post"){
 						@meuHelper.inputTextBootstrap("nome", formCliente("nome").value, "Nome:", "text")
 						@meuHelper.inputTextBootstrap("cpf", formCliente("cpf").value, "CPF:", "text")
@@ -231,14 +231,12 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 						@meuHelper.inputTextBootstrap("cep", formCliente("cep").value, "CEP:", "text")
 						@meuHelper.inputTextBootstrap("complemento", formCliente("complemento").value, "Complemento:", "text")
 						@meuHelper.inputTextBootstrap("email", formCliente("email").value, "E-mail:", "text")
-						@meuHelper.inputPasswordBootstrap("password", formCliente("password").value, "Password:", "text")
-						
-						
-					
+						@meuHelper.inputPasswordBootstrap("password", formCliente("password").value, "Password:")
+											
 						
 						<input type="submit" value="Registrar">
 						
-					}</form>
+					}
 				 </div>
 			</div>
 			<div class="reg-right">
