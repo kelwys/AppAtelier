@@ -6,6 +6,8 @@ import javax.inject.Inject;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
+
+import models.Categoria;
 import models.Cliente;
 import play.data.Form;
 import play.libs.F.Promise;
@@ -29,8 +31,9 @@ private final Form<Cliente> formCliente = Form.form(Cliente.class);
 	
 	public Result novoCliente()
 	{
+		List<Categoria> categorias = Categoria.find.all();
 		List<Cliente> cliente = Cliente.find.all();
-		return ok(views.html.site.register.render(formCliente,new Long(0)));
+		return ok(views.html.site.register.render(formCliente,new Long(0), categorias));
 	}
 	
 	public Result detalhes(long id)
