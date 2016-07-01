@@ -87,9 +87,9 @@
 				</header>
 				@for(produto <- produtos) {
 					<div class="col-md-4 product simpleCart_shelfItem text-center">
-						<a href="single.html"><img src="@routes.Assets.versioned(produto.foto)" alt="" /></a>
+						<a href="@routes.Produtos.detalhesProdutoSite(produto.id)"><img src="@routes.Assets.versioned(produto.foto)" alt="" /></a>
 						<div class="mask">
-							<a href="single.html">Quick View</a>
+							<a href="@routes.Produtos.detalhesProdutoSite(produto.id)">Quick View</a>
 						</div>
 						<a class="product_name" href="single.html">@produto.nome</a>
 						<p><a class="item_add" href="#"><i></i> <span class="item_price">R$ @produto.preco</span></a></p>

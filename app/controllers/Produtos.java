@@ -46,6 +46,15 @@ public class Produtos extends Controller{
 
 		return ok(views.html.produtos.detalhes.render(formPreenchido, produto.id, categoria));
 	}
+	
+	public Result detalhesProdutoSite(long id)
+	{
+		Produto produto = Produto.find.byId(id);
+		List<Produto> produtos = new Produto().find.findPagedList(0, 3).getList();
+		List<Categoria> categorias = Categoria.find.all();
+		Form<Produto> formPreenchido = formProduto.fill(produto);
+		return ok(views.html.site.single.render(categorias, produtos, produto.id, formPreenchido));
+	}
 
 	
 	public Result salvar(Long id){
