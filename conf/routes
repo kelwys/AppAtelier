@@ -9,6 +9,7 @@ GET     /listaProdutos/                     controllers.Application.listaProduto
 
 # Rotas para Controle de acesso
 POST    /loginCliente                       controllers.Login.validaLoginCliente()
+POST     /loginAdmin                         controllers.Login.validaLoginAdmin()
 
 
 # Rotas para Classe Produtos

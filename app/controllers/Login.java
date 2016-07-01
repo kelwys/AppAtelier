@@ -1,5 +1,6 @@
 package controllers;
 
+import models.Administrador;
 import models.Categoria;
 import models.Cliente;
 import models.Produto;
@@ -16,15 +17,14 @@ public class Login  extends Controller {
 	
 	public Result index(){	
 		if(session("nomeSessao") == null){
-			return ok(views.html.site.account.render(categorias,"/login"));	
+			return ok(views.html.site.account.render(categorias,"/loginAdmin"));	
 		}else{
-			//return ok(views.html.administradores.render("Administrador", session("nomeSessao")));
+			return ok(views.html.administradores.admin.render(session("nomeSessao")));
 		}		
-		return TODO;				
 	}
 	
 	public Result loginCliente (){
-		return ok(views.html.site.account.render(categorias,"/loginCliente"));
+		return ok(views.html.site.account.render(categorias,"/validaLoginCliente"));
 	}
 	
 	public Result validaLoginCliente(){
@@ -41,30 +41,33 @@ public class Login  extends Controller {
 			return ok (views.html.index.render(categorias, listaProdutos));		
 		}
 		else{
-			System.out.println("PASSOU POR AQUI");
 			return unauthorized(views.html.site.account.render(categorias,"/loginCliente"));
 			
+			//return notFound(String.format("Administrador %s não existe.", id));
 			//flash("", String.format("Usuario ou senha incorreto"));
 		}
 	}
 	
-/*	public Result validaLoginCliente(){
+	public Result loginAdmin (){
+		return ok(views.html.site.account.render(categorias,"/validaLoginAdmin"));
+	}
+	
+	public Result validaLoginAdmin(){
 		DynamicForm formEnviado = Form.form().bindFromRequest();
 		String email = formEnviado.get("email");
 		String senha = formEnviado.get("senha");
-		List<Cliente> listaCliente = Cliente.find.where().eq("email", email).eq("senha", senha).findList();
+		List<Administrador> listaAdmin = Administrador.find.where().eq("email", email).eq("password", senha).findList();
 
-		if(listaCliente != null && listaCliente.size() > 0){			
-			session("id", listaCliente.get(0).id.toString());
-			session("nome", listaCliente.get(0).nome.toString());
-			session("email", listaCliente.get(0).email.toString());			
-			List<Produto> listaProdutos = new Produto().find.findPagedList(0, 9).getList();
-			return ok (views.html.index.render("",listaProdutos));		
+		if(listaAdmin != null && listaAdmin.size() > 0){			
+			session("id", listaAdmin.get(0).id.toString());
+			session("nome", listaAdmin.get(0).nome.toString());
+			session("email", listaAdmin.get(0).email.toString());			
+			return ok (views.html.administradores.admin.render(""));		
 		}
 		else{
-			return unauthorized(views.html.site.account.render("Login", "Usuario ou senha incorreto."));
+			return unauthorized(views.html.site.account.render(categorias,"/loginAdmin"));
 		}
-	}*/
+	}
 	
 	public String validaAcesso(){
 		if (session("nomeSessao") != null){
@@ -86,7 +89,7 @@ public class Login  extends Controller {
 	
 	public Result logout(){
 		session().remove("nomeSessao");
-		return ok(views.html.site.account.render(categorias,"/LogarCli"));
+		return ok(views.html.site.account.render(categorias,"/validaLoginAdmin"));
 	}
 	
 	

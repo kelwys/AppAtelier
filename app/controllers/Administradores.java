@@ -7,6 +7,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import models.Administrador;
+import models.Categoria;
 import play.data.Form;
 import play.libs.F.Promise;
 import play.libs.ws.WSClient;
@@ -20,10 +21,19 @@ private final Form<Administrador> formAdministrador = Form.form(Administrador.cl
 
 	@Inject WSClient ws;
 	
+	public Login admin = new Login();
+	
 	public Result lista()
 	{
-		List<Administrador> administradores = Administrador.find.all();
-		return ok(views.html.administradores.lista.render(administradores));
+		List<Categoria> categorias = Categoria.find.all();
+		if(admin.validaAcesso().equals("logado")){
+			List<Administrador> administradores = Administrador.find.all();
+			return ok(views.html.administradores.lista.render(administradores));
+		}
+		else{
+			return unauthorized(views.html.site.account.render(categorias,"/loginAdmin"));
+		}
+		//return ok(views.html.administradores.lista.render(administradores));
 	}
 	
 	public Result novoAdministrador()

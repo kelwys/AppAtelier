@@ -13,7 +13,7 @@ import play.data.validation.Constraints.Required;
 public class Administrador extends Model{
 	@Id	
 	@GeneratedValue
-	public long id;
+	public Long id;
 	@Required
 	public String nome;
 	@Required

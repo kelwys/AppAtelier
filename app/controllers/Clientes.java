@@ -20,6 +20,7 @@ import play.mvc.Result;
 public class Clientes extends Controller {
 	
 private final Form<Cliente> formCliente = Form.form(Cliente.class);
+public Login admin = new Login();
 
 	@Inject WSClient ws;
 	
@@ -48,20 +49,47 @@ private final Form<Cliente> formCliente = Form.form(Cliente.class);
 		return ok(views.html.clientes.detalhes.render(formPreenchido, cliente.id));
 	}
 	
+	
+/*	public String validaCpf(){
+		if (validaCpfWS(formCliente.get().cpf).equals(true)){
+			return "valido";
+		}
+		else{
+			return "invalido";
+		}
+	}*/
+	
 	public Result salvar(Long id){
 
 		Form<Cliente> formEnviado = formCliente.bindFromRequest();
 		Cliente cliente = formEnviado.get();
-		Cliente clienteOld = Cliente.find.byId(id);
-		AddClienteWS(cliente.nome, cliente.cpf, cliente.telefone, cliente.endereco, cliente.numero, cliente.cep, cliente.complemento, cliente.email, cliente.password, cliente.dataNascimento, cliente.sexo);
-		if(clienteOld != null){
-			cliente.update();
-		} else {
-			cliente.save();
-		}
+		Cliente clienteOld = Cliente.find.byId(id);		
 		
-		flash("success", String.format("Salvo com sucesso!!!"));
-		return redirect(routes.Clientes.lista());
+		/*String cpfValido;
+		if(validaCpf().equals("valido")){
+			cpfValido = formEnviado.get().cpf;
+			AddClienteWS(cliente.nome, cpfValido, cliente.telefone, cliente.endereco, cliente.numero, cliente.cep, cliente.complemento, cliente.email, cliente.password, cliente.dataNascimento, cliente.sexo);
+		*/	
+			AddClienteWS(cliente.nome, cliente.cpf, cliente.telefone, cliente.endereco, cliente.numero, cliente.cep, cliente.complemento, cliente.email, cliente.password, cliente.sexo);
+			if(clienteOld != null){
+				cliente.update();
+			} else {
+				cliente.save();
+			}
+			
+			flash("success", String.format("Salvo com sucesso!!!"));
+			/*}
+			else{
+			return notFound("CPF inválido, favor informar um valor válido!");
+		}	*/
+			
+			if(admin.validaAcesso().equals("logado")){
+		
+				return redirect(routes.Clientes.lista());
+			}
+			else{
+				
+			}
 	}
 	
 	public Result remover(long id)
@@ -93,7 +121,7 @@ private final Form<Cliente> formCliente = Form.form(Cliente.class);
     	return base;
     }
 	
-    public String xmlAddClientes(String nome, String cpf, String telefone, String endereco, int numero, String cep, String complemento, String email, String password, Date data_nascimento, String sexo) {
+    public String xmlAddClientes(String nome, String cpf, String telefone, String endereco, int numero, String cep, String complemento, String email, String password, String sexo) {
     	String requestCliente = "<incluirCliente xmlns=\"http://tempuri.org/\">"
 					+ "<nome>"
 					+ nome
@@ -122,9 +150,9 @@ private final Form<Cliente> formCliente = Form.form(Cliente.class);
 					+ "<password>"
 					+ password
 					+ "</password>"
-					+ "<data_nascimento>"
+					/*+ "<data_nascimento>"
 					+ data_nascimento
-			    	+ "</data_nascimento>"
+			    	+ "</data_nascimento>"*/
 			        + "<sexo>"
 			        + sexo
 			        + " </sexo>"
@@ -133,11 +161,13 @@ private final Form<Cliente> formCliente = Form.form(Cliente.class);
     	return this.baseSoap(requestCliente);
     }
     
-    public Promise<Result> AddClienteWS(String nome, String cpf, String telefone, String endereco, int numero, String cep, String complemento, String email, String password, Date data_nascimento, String sexo){
+    //Date data_nascimento, 
+    public Promise<Result> AddClienteWS(String nome, String cpf, String telefone, String endereco, int numero, String cep, String complemento, String email, String password, String sexo){
     	
     	WSRequest requisicao = ws.url("http://localhost:64647/WebService.asmx?op=incluirCliente");    	
     	
-    	String xmlRequisicao = this.xmlAddClientes(nome, cpf, telefone, endereco, numero, cep, complemento, email, password, data_nascimento, sexo);
+    	//data_nascimento, 
+    	String xmlRequisicao = this.xmlAddClientes(nome, cpf, telefone, endereco, numero, cep, complemento, email, password, sexo);
     	
     	Promise<WSResponse> promessaResposta = requisicao.setContentType("text/xml").post(xmlRequisicao); 
     	
@@ -170,17 +200,67 @@ private final Form<Cliente> formCliente = Form.form(Cliente.class);
     		String complemento = table.getElementsByTagName("complemento").item(0).getTextContent();
     		String email = table.getElementsByTagName("email").item(0).getTextContent();
     		String password = table.getElementsByTagName("password").item(0).getTextContent();
-    		String data_nascimento = table.getElementsByTagName("data_nascimento").item(0).getTextContent();
+    		//String data_nascimento = table.getElementsByTagName("data_nascimento").item(0).getTextContent();
     		String sexo = table.getElementsByTagName("sexo").item(0).getTextContent();
+
+    		//"/"+data_nascimento+
+    		System.out.println(nome+"/"+"/"+cpf+"/"+telefone+"/"+endereco+"/"+numero+"/"+cep+"/"+complemento+"/"+email+"/"+password+"/"+sexo);
     		
-    		System.out.println(nome+"/"+"/"+cpf+"/"+telefone+"/"+endereco+"/"+numero+"/"+cep+"/"+complemento+"/"+email+"/"+password+"/"+data_nascimento+"/"+sexo);
-    		
-    		consulta = (nome+"/"+"/"+cpf+"/"+telefone+"/"+endereco+"/"+numero+"/"+cep+"/"+complemento+"/"+email+"/"+password+"/"+data_nascimento+"/"+sexo);
+    		//"/"+data_nascimento+
+    		consulta = (nome+"/"+"/"+cpf+"/"+telefone+"/"+endereco+"/"+numero+"/"+cep+"/"+complemento+"/"+email+"/"+password+"/"+sexo);
     		
     	}
     		return consulta;
     	
 	}
+	
+	 public String xmlValidaCpf(String cpf) {
+		 	String requestCpf = "<ValidarCPF xmlns=\"http://tempuri.org/\">"
+		 						+"<cpf>"
+		 						+cpf
+		 						+"</cpf>"
+		 						+"</ValidarCPF>";
+	    	
+	    	return this.baseSoap(requestCpf);
+	    }
+	    
+	    public Promise<Result> validaCpfWS(String cpf){
+	    	
+	    	WSRequest requisicao = ws.url("http://localhost:64647/WebService.asmx?op=ValidarCPF");    	
+	    	
+	    	String xmlRequisicao = this.xmlValidaCpf(cpf);
+	    	
+	    	Promise<WSResponse> promessaResposta = requisicao.setContentType("text/xml").post(xmlRequisicao); 
+	    	
+	    	Promise<Result> promessaResultado = promessaResposta.map(resposta -> {
+	    		System.out.println(resposta.getBody());
+	    		String str;
+	    		str ="";
+	    		processarXmlValidaCpf(resposta.asXml());
+	    		return ok(str);
+	    	});
+	    	
+	    	return promessaResultado;
+	    }
+	    
+
+		public String processarXmlValidaCpf(Document documentoXml) {
+	    	
+	    	NodeList listaTables = documentoXml.getElementsByTagName("Table");
+	    	String consulta="";
+	    	for(int i = 0; i < listaTables.getLength(); i++) {
+	    		Element table = (Element) listaTables.item(i);
+	    		
+	    		String cpf = table.getElementsByTagName("cpf").item(0).getTextContent();
+	    		
+	    		System.out.println(cpf);
+	    		
+	    		consulta = (cpf);
+	    		
+	    	}
+	    		return consulta;
+	    	
+		}
 
 
 }
