@@ -1,5 +1,6 @@
 package controllers;
 
+import models.Categoria;
 import models.Cliente;
 import models.Produto;
 import java.util.List;
@@ -11,9 +12,11 @@ import play.data.Form;
 
 public class Login  extends Controller {
 	
-	public Result index(){		
+	List<Categoria> categorias = Categoria.find.all();
+	
+	public Result index(){	
 		if(session("nomeSessao") == null){
-			return ok(views.html.site.account.render("","/login"));	
+			return ok(views.html.site.account.render(categorias,"/login"));	
 		}else{
 			//return ok(views.html.administradores.render("Administrador", session("nomeSessao")));
 		}		
@@ -21,7 +24,7 @@ public class Login  extends Controller {
 	}
 	
 	public Result loginCliente (){
-		return ok(views.html.site.account.render("","/loginCliente"));
+		return ok(views.html.site.account.render(categorias,"/loginCliente"));
 	}
 	
 	public Result validaLoginCliente(){
@@ -33,13 +36,15 @@ public class Login  extends Controller {
 		if(listaCliente != null && listaCliente.size() > 0){			
 			session("id", listaCliente.get(0).id.toString());
 			session("nome", listaCliente.get(0).nome.toString());
-			session("email", listaCliente.get(0).email.toString());			
+			session("email", listaCliente.get(0).email.toString());	
 			List<Produto> listaProdutos = new Produto().find.findPagedList(0, 9).getList();
-			return ok (views.html.index.render("",listaProdutos));		
+			return ok (views.html.index.render(categorias, listaProdutos));		
 		}
 		else{
-			return unauthorized(views.html.site.account.render("", "/loginCliente"));
-			flash("", String.format("Usuario ou senha incorreto"));
+			System.out.println("PASSOU POR AQUI");
+			return unauthorized(views.html.site.account.render(categorias,"/loginCliente"));
+			
+			//flash("", String.format("Usuario ou senha incorreto"));
 		}
 	}
 	
@@ -81,7 +86,7 @@ public class Login  extends Controller {
 	
 	public Result logout(){
 		session().remove("nomeSessao");
-		return ok(views.html.site.account.render("","/LogarCli"));
+		return ok(views.html.site.account.render(categorias,"/LogarCli"));
 	}
 	
 	

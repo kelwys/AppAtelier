@@ -18,7 +18,7 @@ public class Application extends Controller {
         return ok(index.render(categorias, produtos));
     }
     public Result account() {
-        return ok(views.html.site.account.render(categorias));
+        return ok(views.html.site.account.render(categorias, "/loginCliente"));
         
     }
     public Result listaProdutos() {

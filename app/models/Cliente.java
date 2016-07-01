@@ -19,7 +19,7 @@ public class Cliente extends Model{
 
 	@Id	
 	@GeneratedValue
-	public long id;
+	public Long id;
 	@Required
 	public String nome;
 	@Required
