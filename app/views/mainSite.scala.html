@@ -67,7 +67,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 		            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Categorias <b class="caret"></b></a>
 		            <ul class="dropdown-menu">
 			            @for(categoria <- categorias){
-							<li><a href="@routes.Produtos.Vitrine(categoria.id)">@categoria.descricao</a></li>
+							<li><a href="@routes.Produtos.FiltraPorCategoria(categoria.id)">@categoria.descricao</a></li>
 						}
 					</ul>
 			</ul>

@@ -53,7 +53,7 @@ public class Produtos extends Controller{
 		Form<Produto> formEnviado = formProduto.bindFromRequest();
 		Produto produto = formEnviado.get();
 		Produto produtoOld = Produto.find.byId(id);
-		produto.foto = imageUpload();
+		produto.foto = imageUpload("imagem");
 		if(produtoOld != null){
 			produto.update();
 		} else {
@@ -82,10 +82,10 @@ public class Produtos extends Controller{
 		
 	}
 	
-	public String imageUpload() {
+	public String imageUpload(String param) {
     	MultipartFormData body = request().body().asMultipartFormData();
     	FilePart picture = body.getFile("foto");
-    	
+    	String ret = "";
     	if(picture != null) {
 
     		String fileName = picture.getFilename();
@@ -94,22 +94,39 @@ public class Produtos extends Controller{
     		
     		String appDir = System.getProperty("user.dir");
     		
-    		String newPath = appDir + File.separator + "public" + File.separator + "images" + File.separator + "produtos" + File.separator + fileName;
     		
+    		String newPath = appDir + File.separator + "public" + File.separator + "images" + File.separator + "produtos" + File.separator + fileName;
+    		ret = "images" + "\\" + "produtos" + "\\" + fileName;
     		File newFile = new File(newPath);
     		
     		try {
-        		Files.move(file.toPath(), newFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
-        		return fileName;
-    		} catch(IOException e) {
-    			e.printStackTrace();
-    		}
-    		
-    		return fileName;
-    	} else {
-    		flash("error", "Missing file");
-    		return "eroooooooooooooooo";
-    	}
-    }
+  	          Files.move(file.toPath(), newFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+  	      } catch(IOException e) {
+  	       e.printStackTrace();
+  	      }
+  	    }
+  	     return ret;
+  }
+	
+//	public Result mostraProdutoCategoria()
+//	 {
+//	  DynamicForm dynamicForm = Form.form().bindFromRequest();
+//	  
+//	  String input = dynamicForm.get("search");
+//	  List<Categoria> categorias = Categoria.find.all();
+//	  List<Produto> produtos = Produto.find
+//	          .where()
+//	          .like("descricao","%"+input+"%")
+//	          .findList();
+//	  return ok(views.html.site.products.render("Produto", categorias, produtos)); 
+//	 }
+	
+	public Result FiltraPorCategoria(Long id)
+	 {
+	  List<Categoria> categorias = Categoria.find.all();
+	  List<Produto> produtos = Produto.find.where().eq("Categoria_ID",id).findList();
+	  return ok(views.html.site.products.render(categorias, produtos));
+	 }
+
 
 }
