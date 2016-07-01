@@ -15,66 +15,29 @@
 				<div class="latest-bis">
 					<img src="@routes.Assets.versioned("images/produtos/03.jpg")" class="img-responsive" alt="" />
 					<div class="offer">
-						<p>40%</p>
-						<small>Top Offer</small>
+						<p>-40%</p>
+						<small>Top Oferta!</small>
 					</div>
 				</div> 	
 
 			</div>
 			<div class="new-product">
-				<div class="new-product-top">
-					<ul class="product-top-list">
-						<li><a href="index.html">Home</a>&nbsp;<span>&gt;</span></li>
-						<li><span class="act">Best Sales</span>&nbsp;</li>
-					</ul>
-					<p class="back"><a href="index.html">Back to Previous</a></p>
-					<div class="clearfix"></div>
-				</div>
-				<div class="mens-toolbar">
-                 <div class="sort">
-               	   <div class="sort-by">
-			            <label>Sort By</label>
-			            <select>
-			                            <option value="">
-			                    Position                </option>
-			                            <option value="">
-			                    Name                </option>
-			                            <option value="">
-			                    Price                </option>
-			            </select>
-			            <a href=""><img src="@routes.Assets.versioned("images/arrow2.gif")" alt="" class="v-middle"></a>
-	                   </div>
-	    		     </div>
+				
+				<!-- <div class="mens-toolbar">
 		    	        <ul class="women_pagenation">
 					     <li>Page:</li>
 					     <li class="active"><a href="#">1</a></li>
 					     <li><a href="#">2</a></li>
 				  	    </ul>
 	               		 <div class="clearfix"></div>		
-			        </div>
+			        </div> -->
 			        <div id="cbp-vm" class="cbp-vm-switcher cbp-vm-view-grid">
-					<div class="cbp-vm-options">
-						<a href="#" class="cbp-vm-icon cbp-vm-grid cbp-vm-selected" data-view="cbp-vm-view-grid" title="grid">Grid View</a>
-						<a href="#" class="cbp-vm-icon cbp-vm-list" data-view="cbp-vm-view-list" title="list">List View</a>
-					</div>
-					<div class="pages">   
-        	 <div class="limiter visible-desktop">
-               <label>Show</label>
-                  <select>
-                            <option value="" selected="selected">
-                    9                </option>
-                            <option value="">
-                    15                </option>
-                            <option value="">
-                    30                </option>
-                  </select> per page        
-               </div>
-       	   </div>
+					
        	   <div class="clearfix"></div>
 				<ul>
 					 @for(produto <- produtos) {
 					  <li>
-							<a class="cbp-vm-image" href="single.html">
+							<a class="cbp-vm-image" href="@routes.Produtos.detalhesProdutoSite(produto.id)">
 								<div class="simpleCart_shelfItem">
 							 <div class="view view-first">
 					   		  <div class="inner_content clearfix">
@@ -98,7 +61,7 @@
 							<div class="cbp-vm-details">
 								@produto.descricao
 							</div>
-							<a class="cbp-vm-icon cbp-vm-add item_add" href="@routes.Carrinho.addItemAoCarrinho(produto.id)">Adicionar</a>							
+							<a class="cbp-vm-icon cbp-vm-add item_add" href="@routes.Carrinho.addItemAoCarrinho(produto.id)">Comprar</a>							
 							</div>
 						</li>
 						}

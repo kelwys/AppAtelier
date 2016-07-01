@@ -18,6 +18,7 @@ GET     /produtos/:id			             controllers.Produtos.detalhes(id: Long)
 POST    /produtos/                           controllers.Produtos.salvar(id: Long)
 GET     /produtos/remover/:id                controllers.Produtos.remover(id: Long)
 GET     /produtos/categoriafiltro/:id        controllers.Produtos.FiltraPorCategoria(id: Long)
+GET     /produtos/detalhes/:id               controllers.Produtos.detalhesProdutoSite(id: Long)
 
 # Rotas para Classe Categorias
 GET     /categorias/                           controllers.Categorias.lista()

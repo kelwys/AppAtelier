@@ -1,0 +1,120 @@
+@(categorias: List[Categoria], produtos: List[Produto], id:Long, formProduto: Form[Produto])
+@mainSite(categorias){
+<div class="container">
+	   <div class="products-page">
+			<div class="products">
+				<div class="product-listy">
+					<h2>Categorias</h2>
+					<ul class="product-list">
+						@for(categoria <- categorias){
+							<li><a href="@routes.Produtos.FiltraPorCategoria(categoria.id)">@categoria.descricao</a></li>
+						}
+					</ul>
+				</div>
+				<div class="latest-bis">
+					<img src="@routes.Assets.versioned("images/produtos/03.jpg")" class="img-responsive" alt="" />
+					<div class="offer">
+						<p>-40%</p>
+						<small>Top Oferta!</small>
+					</div>
+				</div> 	
+
+			</div>			
+			
+			<div class="new-product">
+				<div class="col-md-5 zoom-grid">
+					<div class="flexslider">
+						<ul>
+							<li>
+								<div class="thumb-image"> <img src="@routes.Assets.versioned(formProduto("foto").value)" data-imagezoom="true" class="img-responsive" alt="" /> </div>
+							</li> 
+						</ul>
+					</div>
+				</div>
+				<div class="col-md-7 dress-info">
+					<div class="dress-name">
+						<h3>@formProduto("nome").value</h3>
+						<span>R$ @formProduto("preco").value</span>
+						<div class="clearfix"></div>
+						<p>@formProduto("descricao").value</p>
+					</div>
+					<div class="span span1">
+						<p class="left">FABRICAÇÃO</p>
+						<p class="right">Brasil</p>
+						<div class="clearfix"></div>
+					</div>
+					<div class="span span2">
+						<p class="left">TAMANHO</p>
+						<p class="right">A: 15 cm X L: 20 cm</p>
+						<div class="clearfix"></div>
+					</div>
+					<div class="span span3">
+						<p class="left">QTD FOLHAS</p>
+						<p class="right">150</p>
+						<div class="clearfix"></div>
+					</div>
+					
+					<a class="cbp-vm-icon cbp-vm-add item_add" href="@routes.Carrinho.addItemAoCarrinho(id)">COMPRAR</a>
+					
+				<script src="@routes.Assets.versioned("vendors/appatelier/js/imagezoom.js")"></script>
+					<!-- FlexSlider -->
+					<script defer src="@routes.Assets.versioned("vendors/appatelier/js/jquery.flexslider.js")"></script>
+					<script>
+						// Can also be used with $(document).ready()
+						$(window).load(function() {
+						  $('.flexslider').flexslider({
+							animation: "slide",
+							controlNav: "thumbnails"
+						  });
+						});
+					</script>
+				</div>
+				<div class="clearfix"></div>
+					
+
+			</div>
+			<div class="clearfix"></div>
+
+   <div class="other-products products-grid">
+		<div class="container">
+			<header>
+				<h3 class="like text-center">Produtos Relacionados</h3>   
+			</header>
+				@for(produto <- produtos) {			
+					<div class="col-md-4 product simpleCart_shelfItem text-center">
+						<a href="@routes.Produtos.detalhesProdutoSite(produto.id)"><img src="@routes.Assets.versioned(produto.foto)"" alt="" /></a>
+						<div class="mask">
+							<a href="@routes.Produtos.detalhesProdutoSite(produto.id)">Quick View</a>
+						</div>
+						<a class="product_name" href="@routes.Produtos.detalhesProdutoSite(produto.id)">@produto.nome</a>
+						<p><a class="item_add" href="#"><i></i> <span class="item_price">R$ @produto.preco</span></a></p>
+					</div>
+				}
+					<div class="clearfix"></div>
+				   </div>
+				   </div>
+				   </div>
+				   </div>
+   <script src="@routes.Assets.versioned("vendors/appatelier/js/responsive-tabs.js")"></script>
+    <script type="text/javascript">
+      $( '#myTab a' ).click( function ( e ) {
+        e.preventDefault();
+        $( this ).tab( 'show' );
+      } );
+
+      $( '#moreTabs a' ).click( function ( e ) {
+        e.preventDefault();
+        $( this ).tab( 'show' );
+      } );
+
+      ( function( $ ) {
+          // Test for making sure event are maintained
+          $( '.js-alert-test' ).click( function () {
+            alert( 'Button Clicked: Event was maintained' );
+          } );
+          fakewaffle.responsiveTabs( [ 'xs', 'sm' ] );
+      } )( jQuery );
+
+    </script>
+
+}

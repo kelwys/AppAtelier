@@ -3,22 +3,8 @@
 		<!-- checkout -->
 <div class="cart-items">
 	<div class="container">
-	<div class="dreamcrub">
-			   	 <ul class="breadcrumbs">
-                    <li class="home">
-                       <a href="@routes.Application.index()" title="Ir para a pagina inicial">Home</a>&nbsp;
-                       <span>&gt;</span>
-                    </li>
-                    <li class="women">
-                       Carrinho
-                    </li>
-                </ul>
-                <ul class="previous">
-                	<li><a href="index.html">Back to Previous Page</a></li>
-                </ul>
-                <div class="clearfix"></div>
-			   </div>
-			 <h2>MY SHOPPING BAG (3)</h2>
+	
+			 <h2>MEU CARRINHO</h2>
 			 <div class="cart-gd">
 				<script>$(document).ready(function(c) {
 					$('.close1').on('click', function(c){
@@ -44,7 +30,7 @@
 				      <td>@item.produto.nome</td>
 				      <td>@item.produto.preco</td>
 				      <td>@item.quantidade</td>
-				      <td><a class="acount-btn" href="@routes.Carrinho.remItemDoCarrinho(item.produto.id)">Remover</a></td>
+				      <td><a class="acount-btn" href="@routes.Carrinho.remItemDoCarrinho(item.produto.id)">X</a></td>
 				    </tr>
 				  }
 				  </tbody>
