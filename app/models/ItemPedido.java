@@ -24,6 +24,8 @@ public class ItemPedido extends Model{
 	public int quantidade;
 	@Required
 	public double precoUnitario;
+	@Required
+	public double precoTotal;
 	
 	public static Finder<Long, ItemPedido> find = new Finder<Long,ItemPedido>(ItemPedido.class);
 

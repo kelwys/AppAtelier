@@ -12,6 +12,8 @@ libraryDependencies ++= Seq(
   javaWs,
   "mysql" % "mysql-connector-java" % "5.1.38"
 )
+libraryDependencies += "org.json"%"org.json"%"chargebee-1.0"
+
 
 // Play provides two styles of routers, one expects its actions to be injected, the
 // other, legacy style, accesses its actions statically.

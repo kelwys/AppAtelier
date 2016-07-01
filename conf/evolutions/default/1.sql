@@ -39,6 +39,7 @@ create table item_pedido (
   produto_id                bigint,
   quantidade                integer,
   preco_unitario            double,
+  preco_total               double,
   constraint pk_item_pedido primary key (id))
 ;
 
