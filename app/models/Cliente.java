@@ -1,5 +1,6 @@
 package models;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -38,7 +39,7 @@ public class Cliente extends Model{
 	public String email;
 	@Required
 	public String password;
-	public Date dataNascimento;
+	public LocalDate datanascimento;
 	@Required
 	public String sexo;
 	

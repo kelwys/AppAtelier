@@ -28,7 +28,7 @@ create table cliente (
   complemento               varchar(255),
   email                     varchar(255),
   password                  varchar(255),
-  data_nascimento           datetime(6),
+  datanascimento            date,
   sexo                      varchar(255),
   constraint pk_cliente primary key (id))
 ;

@@ -1,5 +1,7 @@
 package controllers;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import javax.inject.Inject;
@@ -9,6 +11,7 @@ import org.w3c.dom.NodeList;
 
 import models.Categoria;
 import models.Cliente;
+import play.data.DynamicForm;
 import play.data.Form;
 import play.libs.F.Promise;
 import play.libs.ws.WSClient;
@@ -20,7 +23,6 @@ import play.mvc.Result;
 public class Clientes extends Controller {
 	
 private final Form<Cliente> formCliente = Form.form(Cliente.class);
-public Login admin = new Login();
 
 	@Inject WSClient ws;
 	
@@ -49,47 +51,44 @@ public Login admin = new Login();
 		return ok(views.html.clientes.detalhes.render(formPreenchido, cliente.id));
 	}
 	
-	
-/*	public String validaCpf(){
-		if (validaCpfWS(formCliente.get().cpf).equals(true)){
-			return "valido";
-		}
-		else{
-			return "invalido";
-		}
-	}*/
-	
 	public Result salvar(Long id){
 
-		Form<Cliente> formEnviado = formCliente.bindFromRequest();
-		Cliente cliente = formEnviado.get();
-		Cliente clienteOld = Cliente.find.byId(id);		
+		//Form<Cliente> formEnviado = formCliente.bindFromRequest();
+		DynamicForm formEnviado = Form.form().bindFromRequest();
+		Cliente cliente = new Cliente();
+		Cliente clienteOld = Cliente.find.byId(id);
+		DateTimeFormatter formatoData = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		LocalDate data = LocalDate.parse(formEnviado.get("datanascimento"), formatoData);
 		
-		/*String cpfValido;
-		if(validaCpf().equals("valido")){
-			cpfValido = formEnviado.get().cpf;
-			AddClienteWS(cliente.nome, cpfValido, cliente.telefone, cliente.endereco, cliente.numero, cliente.cep, cliente.complemento, cliente.email, cliente.password, cliente.dataNascimento, cliente.sexo);
-		*/	
-			AddClienteWS(cliente.nome, cliente.cpf, cliente.telefone, cliente.endereco, cliente.numero, cliente.cep, cliente.complemento, cliente.email, cliente.password, cliente.sexo);
-			if(clienteOld != null){
-				cliente.update();
-			} else {
-				cliente.save();
-			}
-			
-			flash("success", String.format("Salvo com sucesso!!!"));
-			/*}
-			else{
-			return notFound("CPF inválido, favor informar um valor válido!");
-		}	*/
-			
-			if(admin.validaAcesso().equals("logado")){
+		cliente.datanascimento = data;
+		cliente.nome = formEnviado.get("nome");
+		cliente.cpf = formEnviado.get("cpf");
+		cliente.email = formEnviado.get("email");
 		
-				return redirect(routes.Clientes.lista());
-			}
-			else{
-				
-			}
+		cliente.nome = formEnviado.get("nome");
+		cliente.cpf = formEnviado.get("cpf");
+		cliente.telefone = formEnviado.get("telefone");
+		cliente.endereco = formEnviado.get("endereco");
+		cliente.numero = Integer.parseInt(formEnviado.get("numero"));
+		cliente.cep = formEnviado.get("cep");
+		cliente.complemento = formEnviado.get("complemento");
+		cliente.email = formEnviado.get(" email");
+		cliente.password = formEnviado.get("password");
+		cliente.datanascimento = data;
+		cliente.sexo = formEnviado.get("sexo");
+		
+		
+         
+		
+		AddClienteWS(cliente.nome, cliente.cpf, cliente.telefone, cliente.endereco, cliente.numero, cliente.cep, cliente.complemento, cliente.email, cliente.password, cliente.datanascimento, cliente.sexo);
+		if(clienteOld != null){
+			cliente.update();
+		} else {
+			cliente.save();
+		}
+		
+		flash("success", String.format("Salvo com sucesso!!!"));
+		return redirect(routes.Clientes.lista());
 	}
 	
 	public Result remover(long id)
@@ -121,7 +120,7 @@ public Login admin = new Login();
     	return base;
     }
 	
-    public String xmlAddClientes(String nome, String cpf, String telefone, String endereco, int numero, String cep, String complemento, String email, String password, String sexo) {
+    public String xmlAddClientes(String nome, String cpf, String telefone, String endereco, int numero, String cep, String complemento, String email, String password, LocalDate datanascimento, String sexo) {
     	String requestCliente = "<incluirCliente xmlns=\"http://tempuri.org/\">"
 					+ "<nome>"
 					+ nome
@@ -150,9 +149,9 @@ public Login admin = new Login();
 					+ "<password>"
 					+ password
 					+ "</password>"
-					/*+ "<data_nascimento>"
-					+ data_nascimento
-			    	+ "</data_nascimento>"*/
+					+ "<datanascimento>"
+					+ datanascimento
+			    	+ "</datanascimento>"
 			        + "<sexo>"
 			        + sexo
 			        + " </sexo>"
@@ -161,13 +160,11 @@ public Login admin = new Login();
     	return this.baseSoap(requestCliente);
     }
     
-    //Date data_nascimento, 
-    public Promise<Result> AddClienteWS(String nome, String cpf, String telefone, String endereco, int numero, String cep, String complemento, String email, String password, String sexo){
+    public Promise<Result> AddClienteWS(String nome, String cpf, String telefone, String endereco, int numero, String cep, String complemento, String email, String password, LocalDate datanascimento, String sexo){
     	
     	WSRequest requisicao = ws.url("http://localhost:64647/WebService.asmx?op=incluirCliente");    	
     	
-    	//data_nascimento, 
-    	String xmlRequisicao = this.xmlAddClientes(nome, cpf, telefone, endereco, numero, cep, complemento, email, password, sexo);
+    	String xmlRequisicao = this.xmlAddClientes(nome, cpf, telefone, endereco, numero, cep, complemento, email, password, datanascimento, sexo);
     	
     	Promise<WSResponse> promessaResposta = requisicao.setContentType("text/xml").post(xmlRequisicao); 
     	
@@ -189,78 +186,11 @@ public Login admin = new Login();
     	String consulta="";
     	for(int i = 0; i < listaTables.getLength(); i++) {
     		Element table = (Element) listaTables.item(i);
-    		
-    		//nome, cpf, telefone, endereco, numero, cep, complemento, email, password, data_nascimento, sexo
-    		String nome = table.getElementsByTagName("nome").item(0).getTextContent();
-    		String cpf = table.getElementsByTagName("cpf").item(0).getTextContent();
-    		String telefone = table.getElementsByTagName("telefone").item(0).getTextContent();
-    		String endereco = table.getElementsByTagName("endereco").item(0).getTextContent();
-    		String numero = table.getElementsByTagName("numero").item(0).getTextContent();
-    		String cep = table.getElementsByTagName("cep").item(0).getTextContent();
-    		String complemento = table.getElementsByTagName("complemento").item(0).getTextContent();
-    		String email = table.getElementsByTagName("email").item(0).getTextContent();
-    		String password = table.getElementsByTagName("password").item(0).getTextContent();
-    		//String data_nascimento = table.getElementsByTagName("data_nascimento").item(0).getTextContent();
-    		String sexo = table.getElementsByTagName("sexo").item(0).getTextContent();
-
-    		//"/"+data_nascimento+
-    		System.out.println(nome+"/"+"/"+cpf+"/"+telefone+"/"+endereco+"/"+numero+"/"+cep+"/"+complemento+"/"+email+"/"+password+"/"+sexo);
-    		
-    		//"/"+data_nascimento+
-    		consulta = (nome+"/"+"/"+cpf+"/"+telefone+"/"+endereco+"/"+numero+"/"+cep+"/"+complemento+"/"+email+"/"+password+"/"+sexo);
-    		
+    		    		
     	}
     		return consulta;
     	
 	}
-	
-	 public String xmlValidaCpf(String cpf) {
-		 	String requestCpf = "<ValidarCPF xmlns=\"http://tempuri.org/\">"
-		 						+"<cpf>"
-		 						+cpf
-		 						+"</cpf>"
-		 						+"</ValidarCPF>";
-	    	
-	    	return this.baseSoap(requestCpf);
-	    }
-	    
-	    public Promise<Result> validaCpfWS(String cpf){
-	    	
-	    	WSRequest requisicao = ws.url("http://localhost:64647/WebService.asmx?op=ValidarCPF");    	
-	    	
-	    	String xmlRequisicao = this.xmlValidaCpf(cpf);
-	    	
-	    	Promise<WSResponse> promessaResposta = requisicao.setContentType("text/xml").post(xmlRequisicao); 
-	    	
-	    	Promise<Result> promessaResultado = promessaResposta.map(resposta -> {
-	    		System.out.println(resposta.getBody());
-	    		String str;
-	    		str ="";
-	    		processarXmlValidaCpf(resposta.asXml());
-	    		return ok(str);
-	    	});
-	    	
-	    	return promessaResultado;
-	    }
-	    
-
-		public String processarXmlValidaCpf(Document documentoXml) {
-	    	
-	    	NodeList listaTables = documentoXml.getElementsByTagName("Table");
-	    	String consulta="";
-	    	for(int i = 0; i < listaTables.getLength(); i++) {
-	    		Element table = (Element) listaTables.item(i);
-	    		
-	    		String cpf = table.getElementsByTagName("cpf").item(0).getTextContent();
-	    		
-	    		System.out.println(cpf);
-	    		
-	    		consulta = (cpf);
-	    		
-	    	}
-	    		return consulta;
-	    	
-		}
 
 
 }
