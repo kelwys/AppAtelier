@@ -78,9 +78,11 @@ private final Form<Cliente> formCliente = Form.form(Cliente.class);
 		cliente.sexo = formEnviado.get("sexo");
 		
 		
-         
 		
-		AddClienteWS(cliente.nome, cliente.cpf, cliente.telefone, cliente.endereco, cliente.numero, cliente.cep, cliente.complemento, cliente.email, cliente.password, cliente.datanascimento, cliente.sexo);
+		
+        
+		
+		AddClienteWS(cliente.nome, cliente.cpf, cliente.telefone, cliente.endereco, cliente.numero, cliente.cep, cliente.complemento, cliente.email, cliente.password, cliente.datanascimento, cliente.sexo, cliente.perfil);
 		if(clienteOld != null){
 			cliente.update();
 		} else {
@@ -89,8 +91,13 @@ private final Form<Cliente> formCliente = Form.form(Cliente.class);
 		
 		flash("success", String.format("Salvo com sucesso!!!"));
 		return redirect(routes.Clientes.lista());
-	}
+		
+        }
 	
+	
+	
+	
+
 	public Result remover(long id)
 	{
 		Cliente cliente = new Cliente();
@@ -120,7 +127,7 @@ private final Form<Cliente> formCliente = Form.form(Cliente.class);
     	return base;
     }
 	
-    public String xmlAddClientes(String nome, String cpf, String telefone, String endereco, int numero, String cep, String complemento, String email, String password, LocalDate datanascimento, String sexo) {
+    public String xmlAddClientes(String nome, String cpf, String telefone, String endereco, int numero, String cep, String complemento, String email, String password, LocalDate datanascimento, String sexo, int perfil) {
     	String requestCliente = "<incluirCliente xmlns=\"http://tempuri.org/\">"
 					+ "<nome>"
 					+ nome
@@ -155,16 +162,20 @@ private final Form<Cliente> formCliente = Form.form(Cliente.class);
 			        + "<sexo>"
 			        + sexo
 			        + " </sexo>"
-					+ "</incluirCliente>";
+			        + "<perfil>"
+			        + perfil
+			        + " </perfil>"
+			       	+ "</incluirCliente>";
     	
     	return this.baseSoap(requestCliente);
     }
     
-    public Promise<Result> AddClienteWS(String nome, String cpf, String telefone, String endereco, int numero, String cep, String complemento, String email, String password, LocalDate datanascimento, String sexo){
+    
+    public Promise<Result> AddClienteWS(String nome, String cpf, String telefone, String endereco, int numero, String cep, String complemento, String email, String password, LocalDate datanascimento, String sexo, int perfil){
     	
     	WSRequest requisicao = ws.url("http://localhost:64647/WebService.asmx?op=incluirCliente");    	
     	
-    	String xmlRequisicao = this.xmlAddClientes(nome, cpf, telefone, endereco, numero, cep, complemento, email, password, datanascimento, sexo);
+    	String xmlRequisicao = this.xmlAddClientes(nome, cpf, telefone, endereco, numero, cep, complemento, email, password, datanascimento, sexo, perfil);
     	
     	Promise<WSResponse> promessaResposta = requisicao.setContentType("text/xml").post(xmlRequisicao); 
     	
@@ -191,6 +202,6 @@ private final Form<Cliente> formCliente = Form.form(Cliente.class);
     		return consulta;
     	
 	}
-
+	
 
 }
