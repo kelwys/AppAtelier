@@ -43,6 +43,8 @@ public class Cliente extends Model{
 	@Required
 	public String sexo;
 	
+	public Integer perfil = 1; // 1 = Admin
+	
 	public static Finder<Long, Cliente> find = new Finder<Long,Cliente>(Cliente.class);
 	
 	@OneToMany(mappedBy="cliente")
