@@ -34,7 +34,8 @@
 				<div class="col-md-7 dress-info">
 					<div class="dress-name">
 						<h3>@formProduto("nome").value</h3>
-						<span>R$ @formProduto("preco").value</span>
+						
+						<span>R$ @{"%.2f".format(formProduto("preco").value.toFloat)}</span>
 						<div class="clearfix"></div>
 						<p>@formProduto("descricao").value</p>
 					</div>
@@ -56,22 +57,8 @@
 					
 					<a class="cbp-vm-icon cbp-vm-add item_add" href="@routes.Carrinho.addItemAoCarrinho(id)">COMPRAR</a>
 					
-				<script src="@routes.Assets.versioned("vendors/appatelier/js/imagezoom.js")"></script>
-					<!-- FlexSlider -->
-					<script defer src="@routes.Assets.versioned("vendors/appatelier/js/jquery.flexslider.js")"></script>
-					<script>
-						// Can also be used with $(document).ready()
-						$(window).load(function() {
-						  $('.flexslider').flexslider({
-							animation: "slide",
-							controlNav: "thumbnails"
-						  });
-						});
-					</script>
+				
 				</div>
-				<div class="clearfix"></div>
-					
-
 			</div>
 			<div class="clearfix"></div>
 

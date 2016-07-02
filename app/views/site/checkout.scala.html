@@ -28,7 +28,7 @@
 				    <tr>
 				      <td width="15%" Align = center><img src="@routes.Assets.versioned(item.produto.foto)" class="img-responsive" alt=""/></td>
 				      <td>@item.produto.nome</td>
-				      <td>@item.produto.preco</td>
+				      <td>@{"%.2f".format(item.produto.preco.toFloat)}</td>
 				      <td>@item.quantidade</td>
 				      <td><a class="acount-btn" href="@routes.Carrinho.remItemDoCarrinho(item.produto.id)">X</a></td>
 				    </tr>

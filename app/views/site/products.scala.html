@@ -51,7 +51,7 @@
 									   <div class="cart-left">
 										 <p class="title">@produto.nome</p>
 									   </div>
-									   <div class="pricey"><span class="item_price">@produto.preco</span></div>
+									   <div class="pricey"><span class="item_price">@{"%.2f".format(produto.preco.toFloat)}</span></div>
 									   <div class="clearfix"></div>
 								     </div>		
 								  </div>
