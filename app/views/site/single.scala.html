@@ -1,5 +1,9 @@
 @(categorias: List[Categoria], produtos: List[Produto], id:Long, formProduto: Form[Produto])
 @mainSite(categorias){
+<script src="@routes.Assets.versioned("vendors/appatelier/js/jquery.min.js")"></script>
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+<script type="text/javascript" src="@routes.Assets.versioned("vendors/appatelier/js/bootstrap-3.1.1.min.js")"></script>
+<script src="@routes.Assets.versioned("vendors/appatelier/js/simpleCart.min.js")"> </script>
 <div class="container">
 	   <div class="products-page">
 			<div class="products">
@@ -23,11 +27,17 @@
 			
 			<div class="new-product">
 				<div class="col-md-5 zoom-grid">
-					<div class="flexslider">
+					<div>
 						<ul>
-							<li>
+							<li data-thumb="@routes.Assets.versioned(formProduto("foto").value)">
 								<div class="thumb-image"> <img src="@routes.Assets.versioned(formProduto("foto").value)" data-imagezoom="true" class="img-responsive" alt="" /> </div>
-							</li> 
+							</li>
+							<!-- <li data-thumb="@routes.Assets.versioned("images/si1.jpg")">
+								<div class="thumb-image"> <img src="@routes.Assets.versioned("images/si1.jpg")" data-imagezoom="true" class="img-responsive" alt="" /> </div>
+							</li>
+							<li data-thumb="@routes.Assets.versioned("images/si2.jpg")">
+							<div class="thumb-image"> <img src="@routes.Assets.versioned("images/si2.jpg")" data-imagezoom="true" class="img-responsive" alt="" /> </div>
+							</li>  --> 
 						</ul>
 					</div>
 				</div>
@@ -56,7 +66,18 @@
 					</div>
 					
 					<a class="cbp-vm-icon cbp-vm-add item_add" href="@routes.Carrinho.addItemAoCarrinho(id)">COMPRAR</a>
-					
+					<script src="@routes.Assets.versioned("vendors/appatelier/js/imagezoom.js")"></script>
+					<!-- FlexSlider -->
+					<script defer src="@routes.Assets.versioned("vendors/appatelier/js/jquery.flexslider.js")"></script>
+					<script>
+						// Can also be used with $(document).ready()
+						$(window).load(function() {
+						  $('.flexslider').flexslider({
+							animation: "slide",
+							controlNav: "thumbnails"
+						  });
+						});
+					</script>
 				
 				</div>
 			</div>
@@ -82,7 +103,7 @@
 				   </div>
 				   </div>
 				   </div>
-   <script src="@routes.Assets.versioned("vendors/appatelier/js/responsive-tabs.js")"></script>
+    <!-- <script src="@routes.Assets.versioned("vendors/appatelier/js/responsive-tabs.js")"></script> -->
     <script type="text/javascript">
       $( '#myTab a' ).click( function ( e ) {
         e.preventDefault();
@@ -102,6 +123,6 @@
           fakewaffle.responsiveTabs( [ 'xs', 'sm' ] );
       } )( jQuery );
 
-    </script>
+    </script> 
 
 }
