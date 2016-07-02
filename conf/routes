@@ -9,7 +9,7 @@ GET     /listaProdutos/                     controllers.Application.listaProduto
 
 # Rotas para Controle de acesso
 POST    /loginCliente                       controllers.Login.validaLoginCliente()
-POST     /loginAdmin                         controllers.Login.validaLoginAdmin()
+POST    /index								controllers.Login.index()
 
 
 # Rotas para Classe Produtos
@@ -35,7 +35,7 @@ GET     /administradores/novo                       controllers.Administradores.
 GET     /administradores/:id			             controllers.Administradores.detalhes(id: Long)
 POST    /administradores/                           controllers.Administradores.salvar(id: Long)
 GET     /administradores/remover/:id                controllers.Administradores.remover(id: Long)
-#GET     /administradores/AddAdmimWS/              controllers.Administradores.AddAdministradoresWS()
+
 
 # Rotas para Classe Clientes
 GET     /clientes/                           controllers.Clientes.lista()
@@ -43,7 +43,7 @@ GET     /clientes/novo                       controllers.Clientes.novoCliente()
 GET     /clientes/:id			             controllers.Clientes.detalhes(id: Long)
 POST    /clientes/                           controllers.Clientes.salvar(id: Long)
 GET     /clientes/remover/:id                controllers.Clientes.remover(id: Long)
-#GET    /clientes/AddClienteWS/               controllers.Clientes.AddClienteWS()
+
 
 # Rotas para Classe Carrinho
 GET /carrinho/                               controllers.Carrinho.addItemAoCarrinho(id: Long)
