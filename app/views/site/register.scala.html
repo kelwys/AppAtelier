@@ -15,7 +15,7 @@
                     </li>
                 </ul>
                 <ul class="previous">
-                	<li><a href="index.html">Voltar para a página anterior.</a></li>
+                	<li><a href="index.html">Voltar para a pÃ¡gina anterior.</a></li>
                 </ul>
                 <div class="clearfix"></div>
 			   </div>
@@ -24,15 +24,15 @@
 			<div class="reg-form">
 				<div class="reg">
 					 <p>Bem-vindo, por favor insira os seguintes dados para continuar.</p>
-					 <p>Se você já possui um cadastro. <a href="@routes.Application.account()">click aqui</a></p>
+					 <p>Se vocÃª jÃ¡ possui um cadastro. <a href="@routes.Application.account()">click aqui</a></p>
 					 
 					 @meuHelper.meuForm("clientes", routes.Clientes.salvar(id), "post"){
 						@meuHelper.inputTextBootstrap("nome", formCliente("nome").value, "Nome:", "text")
 						@meuHelper.inputTextBootstrap("cpf", formCliente("cpf").value, "CPF:", "text")
 						@meuHelper.inputTextBootstrap("sexo", formCliente("sexo").value, "Sexo:", "text")
-						@meuHelper.inputDateBootstrap("data", "Data de Nascimento")
+						@meuHelper.inputDateBootstrap("datanascimento", "Data de Nascimento")
 						@meuHelper.inputTextBootstrap("telefone", formCliente("telefone").value, "Telefone:", "text")
-						@meuHelper.inputTextBootstrap("endereco", formCliente("endereco").value, "Endereço:", "text")
+						@meuHelper.inputTextBootstrap("endereco", formCliente("endereco").value, "EndereÃ§o:", "text")
 						@meuHelper.inputTextBootstrap("numero", formCliente("numero").value, "numero:", "text")
 						@meuHelper.inputTextBootstrap("cep", formCliente("cep").value, "CEP:", "text")
 						@meuHelper.inputTextBootstrap("complemento", formCliente("complemento").value, "Complemento:", "text")
@@ -50,13 +50,13 @@
 			<div class="reg-right">
 				 <h3>REGISTRAR</h3>
 				 <div class="strip"></div>
-				 <p>Para ser cliente, é necessário preencher corretamente o formulário abaixo com os respectivos dados cadastrais. Os campos em NEGRITO são de preenchimento obrigatório e essenciais para processarmos o envio do seu futuro pedido.</p>
-				 <h3 class="lorem">TER UMA CONTA PERMITIRÁ:</h3>
+				 <p>Para ser cliente, Ã© necessÃ¡rio preencher corretamente o formulÃ¡rio abaixo com os respectivos dados cadastrais. Os campos em NEGRITO sÃ£o de preenchimento obrigatÃ³rio e essenciais para processarmos o envio do seu futuro pedido.</p>
+				 <h3 class="lorem">TER UMA CONTA PERMITIRÃ�:</h3>
 				 <div class="strip"></div>
 				 	<ol>
-						 <li>Ter acesso a promoções e lançamentos</li>
-						 <li>Visualizar seu histórico de pedidos</li>
-						 <li>Adicionar ou alterar as preferências de e-mail</li>
+						 <li>Ter acesso a promoÃ§Ãµes e lanÃ§amentos</li>
+						 <li>Visualizar seu histÃ³rico de pedidos</li>
+						 <li>Adicionar ou alterar as preferÃªncias de e-mail</li>
 					</ol>
 			</div>
 			<div class="clearfix"></div>

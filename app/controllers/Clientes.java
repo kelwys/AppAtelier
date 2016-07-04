@@ -26,6 +26,8 @@ private final Form<Cliente> formCliente = Form.form(Cliente.class);
 
 	@Inject WSClient ws;
 	
+	public String cpf = "";
+	
 	public Result lista()
 	{
 		List<Cliente> clientes = Cliente.find.all();
@@ -54,12 +56,15 @@ private final Form<Cliente> formCliente = Form.form(Cliente.class);
 	public Result salvar(Long id){
 
 		//Form<Cliente> formEnviado = formCliente.bindFromRequest();
+		
 		DynamicForm formEnviado = Form.form().bindFromRequest();
 		Cliente cliente = new Cliente();
 		Cliente clienteOld = Cliente.find.byId(id);
 		DateTimeFormatter formatoData = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		LocalDate data = LocalDate.parse(formEnviado.get("datanascimento"), formatoData);
 		
+		wsValidaCPF(cliente.cpf);
+				
 		cliente.datanascimento = data;
 		cliente.nome = formEnviado.get("nome");
 		cliente.cpf = formEnviado.get("cpf");
@@ -127,6 +132,45 @@ private final Form<Cliente> formCliente = Form.form(Cliente.class);
     	return base;
     }
 	
+	public String xmlValidaCPF(String cpf) {
+    	String requestCliente = "<ValidarCPF xmlns=\"http://tempuri.org/\">"   			
+					+"<cpf>"
+    				+cpf
+    				+"</cpf>"
+				    + "</ValidarCPF>";
+    	
+    	return this.baseSoap(requestCliente);
+    }
+	
+	public String processarXmlClientes(Document documentoXml) {
+    	
+    	NodeList listaTables = documentoXml.getElementsByTagName("Table");
+    	String consulta="";
+    	for(int i = 0; i < listaTables.getLength(); i++) {
+    		Element table = (Element) listaTables.item(i);
+    		    		
+    	}
+    		return consulta;
+    	
+	}
+	
+	public String processarXmlCpf(Document documentoXml) {
+		System.out.println("Passei aqui2"); 
+		String str = "";
+			
+		NodeList listaTables = documentoXml.getElementsByTagName("cpf");
+		
+		/*for (int i = 0; i < listaTables.getLength(); i++) {
+			Element table = (Element) listaTables.item(i);
+
+			str = table.getElementsByTagName("cpf").item(0).getTextContent();
+
+			System.out.println(str);
+
+		}*/
+		return cpf.toString(); 
+		}
+	
     public String xmlAddClientes(String nome, String cpf, String telefone, String endereco, int numero, String cep, String complemento, String email, String password, LocalDate datanascimento, String sexo, int perfil) {
     	String requestCliente = "<incluirCliente xmlns=\"http://tempuri.org/\">"
 					+ "<nome>"
@@ -191,17 +235,32 @@ private final Form<Cliente> formCliente = Form.form(Cliente.class);
     }
     
 
-	public String processarXmlClientes(Document documentoXml) {
-    	
-    	NodeList listaTables = documentoXml.getElementsByTagName("Table");
-    	String consulta="";
-    	for(int i = 0; i < listaTables.getLength(); i++) {
-    		Element table = (Element) listaTables.item(i);
-    		    		
-    	}
-    		return consulta;
-    	
+
+	public Promise<Result> wsValidaCPF(String cpf) {
+		WSRequest requisicao = ws.url("http://localhost:64647/WebService.asmx?op=ValidarCPF"); 
+		
+		String xmlRequisicao = this.xmlValidaCPF(cpf);
+		
+		System.out.println("Passei aqui");
+		System.out.println(xmlRequisicao);
+
+		Promise<WSResponse> promessaResposta = requisicao.setContentType("text/xml").post(xmlRequisicao);
+
+		 Promise<Result> promessaResultado = promessaResposta.map(resposta -> {	
+			System.out.println("Passei de novo aqui");
+			String str;
+			processarXmlCpf(resposta.asXml());
+			str = processarXmlCpf(resposta.asXml());
+			return ok(str);
+		});
+		
+		//CompletionStage<Document> documentPromise = ws.url(url).get().thenApply(WSResponse::asXml);
+		
+		return promessaResultado;
 	}
 	
 
+		
+	
+	
 }

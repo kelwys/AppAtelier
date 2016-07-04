@@ -8,6 +8,7 @@ create table administrador (
   nome                      varchar(255),
   email                     varchar(255),
   password                  varchar(255),
+  perfil                    integer,
   constraint pk_administrador primary key (id))
 ;
 
@@ -30,6 +31,7 @@ create table cliente (
   password                  varchar(255),
   datanascimento            date,
   sexo                      varchar(255),
+  perfil                    integer,
   constraint pk_cliente primary key (id))
 ;
 
