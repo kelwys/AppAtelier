@@ -1,6 +1,6 @@
-@(formCliente: Form[Cliente], id:Long, categorias: List[Categoria])
+@(formCliente: Form[Cliente], nomeSessao: String, id:Long, categorias: List[Categoria])
 @import meuHelper._
-@mainSite(categorias){
+@mainSite(categorias, nomeSessao){
 <!-- registration-form -->
 <div class="registration-form">
 	<div class="container">

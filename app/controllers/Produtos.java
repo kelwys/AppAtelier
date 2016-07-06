@@ -21,73 +21,101 @@ public class Produtos extends Controller{
 	
 	
 	private final Form<Produto> formProduto = Form.form(Produto.class);
+	public Login loginStatus = new Login();
+	List<Categoria> categorias = Categoria.find.all();
 	
 	public Result lista()
 	{
-		List<Produto> produtos = Produto.find.all();
-		return ok(views.html.produtos.lista.render(produtos));
+		if(loginStatus.validaAcesso().equals("logado")){
+			List<Produto> produtos = Produto.find.all();
+			return ok(views.html.produtos.lista.render(produtos));
+		}
+		else{
+			return unauthorized(views.html.site.account.render(categorias, "","/loginAdm"));
+		}	
 	}
 	
 	public Result novoProduto()
 	{
-		List<Categoria> categoria = Categoria.find.all();
-		return ok(views.html.produtos.detalhes.render(formProduto,new Long(0), categoria));
+		if(loginStatus.validaAcesso().equals("logado")){
+			List<Categoria> categoria = Categoria.find.all();
+			return ok(views.html.produtos.detalhes.render(formProduto,new Long(0), categoria));
+		}
+		else{
+			return unauthorized(views.html.site.account.render(categorias, "","/loginAdm"));
+		}	
 	}
 	
 	public Result detalhes(long id)
 	{
 		Produto produto = Produto.find.byId(id);
+		
+		if(loginStatus.validaAcesso().equals("logado")){
 
-		if (produto == null) {
-		 return notFound(String.format("Produto %s não existe.", id));
+			if (produto == null) {
+			 return notFound(String.format("Produto %s não existe.", id));
+			}
+			Form<Produto> formPreenchido = formProduto.fill(produto);
+			List<Categoria> categoria = Categoria.find.all();
+	
+			return ok(views.html.produtos.detalhes.render(formPreenchido, produto.id, categoria));
 		}
-		Form<Produto> formPreenchido = formProduto.fill(produto);
-		List<Categoria> categoria = Categoria.find.all();
-
-		return ok(views.html.produtos.detalhes.render(formPreenchido, produto.id, categoria));
+		else{
+			return unauthorized(views.html.site.account.render(categorias, "","/loginAdm"));
+		}	
 	}
 	
 	public Result detalhesProdutoSite(long id)
 	{
-		Produto produto = Produto.find.byId(id);
-		List<Produto> produtos = new Produto().find.findPagedList(0, 3).getList();
-		List<Categoria> categorias = Categoria.find.all();
-		Form<Produto> formPreenchido = formProduto.fill(produto);
-		return ok(views.html.site.single.render(categorias, produtos, produto.id, formPreenchido));
+			Produto produto = Produto.find.byId(id);
+			List<Produto> produtos = new Produto().find.findPagedList(0, 3).getList();
+			List<Categoria> categorias = Categoria.find.all();
+			Form<Produto> formPreenchido = formProduto.fill(produto);
+			return ok(views.html.site.single.render(categorias, "", produtos, produto.id, formPreenchido));
 	}
 
 	
 	public Result salvar(Long id){
 
-		Form<Produto> formEnviado = formProduto.bindFromRequest();
-		Produto produto = formEnviado.get();
-		Produto produtoOld = Produto.find.byId(id);
-		produto.foto = imageUpload("imagem");
-		if(produtoOld != null){
-			produto.update();
-		} else {
-			produto.save();
+		if(loginStatus.validaAcesso().equals("logado")){
+			Form<Produto> formEnviado = formProduto.bindFromRequest();
+			Produto produto = formEnviado.get();
+			Produto produtoOld = Produto.find.byId(id);
+			produto.foto = imageUpload("imagem");
+			if(produtoOld != null){
+				produto.update();
+			} else {
+				produto.save();
+			}
+			
+			flash("success", String.format("Salvo com sucesso!!!"));
+			return redirect(routes.Produtos.lista());
 		}
-		
-		flash("success", String.format("Salvo com sucesso!!!"));
-		return redirect(routes.Produtos.lista());
+		else{
+			return unauthorized(views.html.site.account.render(categorias, "","/loginAdm"));
+		}	
 	}
 	
 	public Result remover(long id)
 	{
 		Produto produto = new Produto();
 		
-		if (produto == null) {
-			 return notFound(String.format("Produto %s não existe.", id));
-			}
-		else
-		{
-			
-			produto.find.ref(id).delete();
-			flash("success", String.format("Produto %s removido", produto));
-		}
+		if(loginStatus.validaAcesso().equals("logado")){
 		
-		return redirect(routes.Produtos.lista());
+			if (produto == null) {
+				 return notFound(String.format("Produto %s não existe.", id));
+				}
+			else
+			{
+				produto.find.ref(id).delete();
+				flash("success", String.format("Produto %s removido", produto));
+			}
+			
+			return redirect(routes.Produtos.lista());
+		}
+		else{
+			return unauthorized(views.html.site.account.render(categorias, "","/loginAdm"));
+		}	
 		
 	}
 	
@@ -134,7 +162,7 @@ public class Produtos extends Controller{
 	 {
 	  List<Categoria> categorias = Categoria.find.all();
 	  List<Produto> produtos = Produto.find.where().eq("Categoria_ID",id).findList();
-	  return ok(views.html.site.products.render(categorias, produtos));
+	  return ok(views.html.site.products.render(categorias, "", produtos));
 	 }
 
 

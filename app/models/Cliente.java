@@ -43,7 +43,7 @@ public class Cliente extends Model{
 	@Required
 	public String sexo;
 	
-	public Integer perfil = 1; // 1 = Admin
+	public Integer perfil = 1; // 1 = Cliente
 	
 	public static Finder<Long, Cliente> find = new Finder<Long,Cliente>(Cliente.class);
 	

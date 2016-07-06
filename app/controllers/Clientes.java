@@ -22,7 +22,9 @@ import play.mvc.Result;
 
 public class Clientes extends Controller {
 	
-private final Form<Cliente> formCliente = Form.form(Cliente.class);
+	private final Form<Cliente> formCliente = Form.form(Cliente.class);
+	public Login loginStatus = new Login();
+	List<Categoria> categorias = Categoria.find.all();
 
 	@Inject WSClient ws;
 	
@@ -30,94 +32,105 @@ private final Form<Cliente> formCliente = Form.form(Cliente.class);
 	
 	public Result lista()
 	{
-		List<Cliente> clientes = Cliente.find.all();
-		return ok(views.html.clientes.lista.render(clientes));
+		if(loginStatus.validaAcesso().equals("logado")){
+			List<Cliente> clientes = Cliente.find.all();
+			return ok(views.html.clientes.lista.render(clientes));
+		}
+		else{
+			return unauthorized(views.html.site.account.render(categorias, "","/loginAdm"));
+		}	
 	}
 	
 	public Result novoCliente()
 	{
-		List<Categoria> categorias = Categoria.find.all();
-		List<Cliente> cliente = Cliente.find.all();
-		return ok(views.html.site.register.render(formCliente,new Long(0), categorias));
+			List<Categoria> categorias = Categoria.find.all();
+			List<Cliente> cliente = Cliente.find.all();
+			return ok(views.html.site.register.render(formCliente, "", new Long(0), categorias));
 	}
 	
 	public Result detalhes(long id)
 	{
 		Cliente cliente = Cliente.find.byId(id);
-
-		if (cliente == null) {
-		 return notFound(String.format("Cliente %s não existe.", id));
+		if(loginStatus.validaAcesso().equals("logado")){
+			if (cliente == null) {
+			 return notFound(String.format("Cliente %s não existe.", id));
+			}
+			Form<Cliente> formPreenchido = formCliente.fill(cliente);
+	
+			return ok(views.html.clientes.detalhes.render(formPreenchido, cliente.id));
 		}
-		Form<Cliente> formPreenchido = formCliente.fill(cliente);
-
-		return ok(views.html.clientes.detalhes.render(formPreenchido, cliente.id));
+		else{
+			return unauthorized(views.html.site.account.render(categorias, "","/loginAdm"));
+		}	
 	}
 	
 	public Result salvar(Long id){
+		
+		//if(loginStatus.validaAcesso().equals("logado")){
 
-		//Form<Cliente> formEnviado = formCliente.bindFromRequest();
+			DynamicForm formEnviado = Form.form().bindFromRequest();
+			Cliente cliente = new Cliente();
+			Cliente clienteOld = Cliente.find.byId(id);
+			DateTimeFormatter formatoData = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+			LocalDate data = LocalDate.parse(formEnviado.get("datanascimento"), formatoData);
+			
+			wsValidaCPF(cliente.cpf);
+					
+			cliente.datanascimento = data;
+			cliente.nome = formEnviado.get("nome");
+			cliente.cpf = formEnviado.get("cpf");
+			cliente.email = formEnviado.get("email");
+			
+			cliente.nome = formEnviado.get("nome");
+			cliente.cpf = formEnviado.get("cpf");
+			cliente.telefone = formEnviado.get("telefone");
+			cliente.endereco = formEnviado.get("endereco");
+			cliente.numero = Integer.parseInt(formEnviado.get("numero"));
+			cliente.cep = formEnviado.get("cep");
+			cliente.complemento = formEnviado.get("complemento");
+			cliente.email = formEnviado.get("email");
+			cliente.password = formEnviado.get("password");
+			cliente.datanascimento = data;
+			cliente.sexo = formEnviado.get("sexo");
+			
+			AddClienteWS(cliente.nome, cliente.cpf, cliente.telefone, cliente.endereco, cliente.numero, cliente.cep, cliente.complemento, cliente.email, cliente.password, cliente.datanascimento, cliente.sexo, cliente.perfil);
+			if(clienteOld != null){
+				cliente.update();
+			} else {
+				cliente.save();
+			}
+			
+			flash("success", String.format("Salvo com sucesso!!!"));
+			return redirect(routes.Application.index());
+			
+		//}
+		/*else{
+			return unauthorized(views.html.site.account.render(categorias, "","/loginAdm"));
+		}	*/
+	}
 		
-		DynamicForm formEnviado = Form.form().bindFromRequest();
-		Cliente cliente = new Cliente();
-		Cliente clienteOld = Cliente.find.byId(id);
-		DateTimeFormatter formatoData = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-		LocalDate data = LocalDate.parse(formEnviado.get("datanascimento"), formatoData);
-		
-		wsValidaCPF(cliente.cpf);
-				
-		cliente.datanascimento = data;
-		cliente.nome = formEnviado.get("nome");
-		cliente.cpf = formEnviado.get("cpf");
-		cliente.email = formEnviado.get("email");
-		
-		cliente.nome = formEnviado.get("nome");
-		cliente.cpf = formEnviado.get("cpf");
-		cliente.telefone = formEnviado.get("telefone");
-		cliente.endereco = formEnviado.get("endereco");
-		cliente.numero = Integer.parseInt(formEnviado.get("numero"));
-		cliente.cep = formEnviado.get("cep");
-		cliente.complemento = formEnviado.get("complemento");
-		cliente.email = formEnviado.get(" email");
-		cliente.password = formEnviado.get("password");
-		cliente.datanascimento = data;
-		cliente.sexo = formEnviado.get("sexo");
-		
-		
-		
-		
-        
-		
-		AddClienteWS(cliente.nome, cliente.cpf, cliente.telefone, cliente.endereco, cliente.numero, cliente.cep, cliente.complemento, cliente.email, cliente.password, cliente.datanascimento, cliente.sexo, cliente.perfil);
-		if(clienteOld != null){
-			cliente.update();
-		} else {
-			cliente.save();
-		}
-		
-		flash("success", String.format("Salvo com sucesso!!!"));
-		return redirect(routes.Clientes.lista());
-		
-        }
 	
-	
-	
-	
-
 	public Result remover(long id)
 	{
 		Cliente cliente = new Cliente();
 		
-		if (cliente == null) {
-			 return notFound(String.format("Cliente %s não existe.", id));
-			}
-		else
-		{
-			
-			cliente.find.ref(id).delete();
-			flash("success", String.format("Cliente %s removido", cliente));
-		}
+		if(loginStatus.validaAcesso().equals("logado")){
 		
-		return redirect(routes.Clientes.lista());
+			if (cliente == null) {
+				 return notFound(String.format("Cliente %s não existe.", id));
+			}
+			else
+			{
+				cliente.find.ref(id).delete();
+				flash("success", String.format("Cliente %s removido", cliente));
+			}
+			
+			return redirect(routes.Clientes.lista());
+			
+		}
+		else{
+			return unauthorized(views.html.site.account.render(categorias, "","/loginAdm"));
+		}	
 		
 	}
 	
@@ -155,7 +168,6 @@ private final Form<Cliente> formCliente = Form.form(Cliente.class);
 	}
 	
 	public String processarXmlCpf(Document documentoXml) {
-		System.out.println("Passei aqui2"); 
 		String str = "";
 			
 		NodeList listaTables = documentoXml.getElementsByTagName("cpf");
@@ -241,7 +253,6 @@ private final Form<Cliente> formCliente = Form.form(Cliente.class);
 		
 		String xmlRequisicao = this.xmlValidaCPF(cpf);
 		
-		System.out.println("Passei aqui");
 		System.out.println(xmlRequisicao);
 
 		Promise<WSResponse> promessaResposta = requisicao.setContentType("text/xml").post(xmlRequisicao);

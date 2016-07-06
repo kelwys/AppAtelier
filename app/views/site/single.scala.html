@@ -1,5 +1,5 @@
-@(categorias: List[Categoria], produtos: List[Produto], id:Long, formProduto: Form[Produto])
-@mainSite(categorias){
+@(categorias: List[Categoria], nomeSessao: String, produtos: List[Produto], id:Long, formProduto: Form[Produto])
+@mainSite(categorias, nomeSessao){
 <script src="@routes.Assets.versioned("vendors/appatelier/js/jquery.min.js")"></script>
 <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
 <script type="text/javascript" src="@routes.Assets.versioned("vendors/appatelier/js/bootstrap-3.1.1.min.js")"></script>

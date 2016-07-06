@@ -1,4 +1,4 @@
-@(categorias: List[Categoria])(content: Html)
+@(categorias: List[Categoria], nomeSessao: String)(content: Html)
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -24,8 +24,13 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 			<div class="container">
 				<div class="header-top-left">
 					<ul>
+						@if((session().get("nomeSessao") == "0" || session().get("nomeSessao") == null)){
 						<li><a href="@routes.Application.account()"><span class="glyphicon glyphicon-user"> </span>Login</a></li>
 						<li><a href="@routes.Clientes.novoCliente()"><span class="glyphicon glyphicon-lock"> </span>Criar Conta</a></li>			
+					}else {
+						<li><a href="@routes.Login.validaLoginCliente()"><span class="glyphicon glyphicon-user"> </span>Bem Vindo(a) @session().get("nomeSessao")</a></li>
+						<li><a href="@routes.Login.logout"><span class="glyphicon glyphicon-lock"> </span>Logout</a></li>
+					}
 					</ul>
 				</div>
 				<div class="header-right">

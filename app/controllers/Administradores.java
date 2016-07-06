@@ -8,6 +8,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import models.Administrador;
 import models.Categoria;
+import play.data.DynamicForm;
 import play.data.Form;
 import play.libs.F.Promise;
 import play.libs.ws.WSClient;
@@ -17,76 +18,94 @@ import play.mvc.Controller;
 import play.mvc.Result;
 
 public class Administradores extends Controller{
-private final Form<Administrador> formAdministrador = Form.form(Administrador.class);
+	
+	private final Form<Administrador> formAdministrador = Form.form(Administrador.class);
+	List<Categoria> categorias = Categoria.find.all();
 
 	@Inject WSClient ws;
 	
-	public Login admin = new Login();
+	public Login loginStatus = new Login();
 	
 	public Result lista()
 	{
-		List<Categoria> categorias = Categoria.find.all();
-		if(admin.validaAcesso().equals("logado")){
+		System.out.println("@@@loginStatus.validaAcesso: " +loginStatus.validaAcesso());
+		if(loginStatus.validaAcesso().equals("logado")){
 			List<Administrador> administradores = Administrador.find.all();
 			return ok(views.html.administradores.lista.render(administradores));
 		}
 		else{
-			return unauthorized(views.html.site.account.render(categorias,"/loginAdmin"));
+			return unauthorized(views.html.site.account.render(categorias, "","/loginAdm"));
 		}
-		//return ok(views.html.administradores.lista.render(administradores));
 	}
 	
 	public Result novoAdministrador()
 	{
 		List<Administrador> administrador = Administrador.find.all();
-		return ok(views.html.administradores.detalhes.render(formAdministrador,new Long(0)));
+		if(loginStatus.validaAcesso().equals("logado")){
+			return ok(views.html.administradores.detalhes.render(formAdministrador,new Long(0)));
+		}
+		else{
+			return unauthorized(views.html.site.account.render(categorias, "","/loginAdm"));
+		}
 	}
 	
 	public Result detalhes(long id)
 	{
 		Administrador administrador = Administrador.find.byId(id);
+		
+		if(loginStatus.validaAcesso().equals("logado")){
 
-		if (administrador == null) {
-		 return notFound(String.format("Administrador %s não existe.", id));
+			if (administrador == null) {
+				return notFound(String.format("Administrador %s não existe.", id));
+			}
+			Form<Administrador> formPreenchido = formAdministrador.fill(administrador);
+	
+			return ok(views.html.administradores.detalhes.render(formPreenchido, administrador.id));
 		}
-		Form<Administrador> formPreenchido = formAdministrador.fill(administrador);
-
-		return ok(views.html.administradores.detalhes.render(formPreenchido, administrador.id));
+		else{
+			return unauthorized(views.html.site.account.render(categorias, "","/loginAdm"));
+		}
 	}
 	
 	public Result salvar(Long id){
 
-		Form<Administrador> formEnviado = formAdministrador.bindFromRequest();
-		Administrador administrador = formEnviado.get();
-		Administrador administradorOld = Administrador.find.byId(id);
-		AddAdministradoresWS(administrador.nome, administrador.email, administrador.password);
-		if(administradorOld != null){
-			administrador.update();
-		} else {
+		if(loginStatus.validaAcesso().equals("logado")){
+			Form<Administrador> formEnviado = formAdministrador.bindFromRequest();
+			Administrador administrador = formEnviado.get();
+			Administrador administradorOld = Administrador.find.byId(id);
+			AddAdministradoresWS(administrador.nome, administrador.email, administrador.password);
+			if(administradorOld != null){
+				administrador.update();
+			} else {
+				administrador.save();
+			}
 			
-			administrador.save();
+			flash("success", String.format("Salvo com sucesso!!!"));
+			return redirect(routes.Administradores.lista());
 		}
-		
-		flash("success", String.format("Salvo com sucesso!!!"));
-		return redirect(routes.Administradores.lista());
+		else{
+			return unauthorized(views.html.site.account.render(categorias, "","/loginAdm"));
+		}
 	}
 	
 	public Result remover(long id)
 	{
-		Administrador administrador = new Administrador();
-		
-		if (administrador == null) {
-			 return notFound(String.format("Administrador %s não existe.", id));
-			}
-		else
-		{
+		if(loginStatus.validaAcesso().equals("logado")){
+			Administrador administrador = new Administrador();
 			
-			administrador.find.ref(id).delete();
-			flash("success", String.format("Administrador %s removido", administrador));
+			if (administrador == null) {
+				 return notFound(String.format("Administrador %s não existe.", id));
+				}
+			else{
+				administrador.find.ref(id).delete();
+				flash("success", String.format("Administrador %s removido", administrador));
+			}
+			
+			return redirect(routes.Administradores.lista());
 		}
-		
-		return redirect(routes.Administradores.lista());
-		
+		else{
+			return unauthorized(views.html.site.account.render(categorias, "","/loginAdm"));
+		}
 	}
 	
 	public String baseSoap(String conteudo) {

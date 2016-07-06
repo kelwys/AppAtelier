@@ -34,7 +34,7 @@ public class Carrinho extends Controller{
 		    		listaItens.add(item);
 		    	}
 		   }
-		  return ok(views.html.site.checkout.render(categoria, listaItens));
+		  return ok(views.html.site.checkout.render(categoria, "", listaItens));
 	 	} catch (JSONException e) {
 	 		return ok("404");
 	    }  	

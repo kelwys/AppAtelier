@@ -5,49 +5,52 @@
 # Home page
 GET     /                                   controllers.Application.index()
 GET     /account/                           controllers.Application.account()
+GET     /accountAdm/                        controllers.Application.accountAdm()
 GET     /listaProdutos/                     controllers.Application.listaProdutos()
 
 # Rotas para Controle de acesso
 POST    /loginCliente                       controllers.Login.validaLoginCliente()
-POST    /index								controllers.Login.index()
+GET     /index								controllers.Login.index()
+POST    /loginAdm                           controllers.Login.validaLoginAdm()
+GET     /logout                             controllers.Login.logout()
 
 
 # Rotas para Classe Produtos
-GET     /produtos/                           controllers.Produtos.lista()
-GET     /produtos/novo                       controllers.Produtos.novoProduto()
-GET     /produtos/:id			             controllers.Produtos.detalhes(id: Long)
-POST    /produtos/                           controllers.Produtos.salvar(id: Long)
-GET     /produtos/remover/:id                controllers.Produtos.remover(id: Long)
-GET     /produtos/categoriafiltro/:id        controllers.Produtos.FiltraPorCategoria(id: Long)
-GET     /produtos/detalhes/:id               controllers.Produtos.detalhesProdutoSite(id: Long)
+GET     /produtos/                          controllers.Produtos.lista()
+GET     /produtos/novo                      controllers.Produtos.novoProduto()
+GET     /produtos/:id			            controllers.Produtos.detalhes(id: Long)
+POST    /produtos/                          controllers.Produtos.salvar(id: Long)
+GET     /produtos/remover/:id               controllers.Produtos.remover(id: Long)
+GET     /produtos/categoriafiltro/:id       controllers.Produtos.FiltraPorCategoria(id: Long)
+GET     /produtos/detalhes/:id              controllers.Produtos.detalhesProdutoSite(id: Long)
 
 # Rotas para Classe Categorias
-GET     /categorias/                           controllers.Categorias.lista()
-GET     /categorias/novo                       controllers.Categorias.novoCategoria()
-GET     /categorias/:id			               controllers.Categorias.detalhes(id: Long)
-POST    /categorias/                           controllers.Categorias.salvar(id: Long)
-GET     /categorias/remover/:id                controllers.Categorias.remover(id: Long)
+GET     /categorias/                        controllers.Categorias.lista()
+GET     /categorias/novo                    controllers.Categorias.novoCategoria()
+GET     /categorias/:id			            controllers.Categorias.detalhes(id: Long)
+POST    /categorias/                        controllers.Categorias.salvar(id: Long)
+GET     /categorias/remover/:id             controllers.Categorias.remover(id: Long)
 
 
 # Rotas para Classe Administradores
-GET     /administradores/                           controllers.Administradores.lista()
-GET     /administradores/novo                       controllers.Administradores.novoAdministrador()
-GET     /administradores/:id			             controllers.Administradores.detalhes(id: Long)
-POST    /administradores/                           controllers.Administradores.salvar(id: Long)
-GET     /administradores/remover/:id                controllers.Administradores.remover(id: Long)
+GET     /administradores/                   controllers.Administradores.lista()
+GET     /administradores/novo               controllers.Administradores.novoAdministrador()
+GET     /administradores/:id			    controllers.Administradores.detalhes(id: Long)
+POST    /administradores/                   controllers.Administradores.salvar(id: Long)
+GET     /administradores/remover/:id        controllers.Administradores.remover(id: Long)
 
 
 # Rotas para Classe Clientes
-GET     /clientes/                           controllers.Clientes.lista()
-GET     /clientes/novo                       controllers.Clientes.novoCliente()
-GET     /clientes/:id			             controllers.Clientes.detalhes(id: Long)
-POST    /clientes/                           controllers.Clientes.salvar(id: Long)
-GET     /clientes/remover/:id                controllers.Clientes.remover(id: Long)
+GET     /clientes/                          controllers.Clientes.lista()
+GET     /clientes/novo                      controllers.Clientes.novoCliente()
+GET     /clientes/:id			            controllers.Clientes.detalhes(id: Long)
+POST    /clientes/                          controllers.Clientes.salvar(id: Long)
+GET     /clientes/remover/:id               controllers.Clientes.remover(id: Long)
 
 
 # Rotas para Classe Carrinho
-GET /carrinho/                               controllers.Carrinho.addItemAoCarrinho(id: Long)
-GET /removeCarrinho/                         controllers.Carrinho.remItemDoCarrinho(id: Long)
+GET /carrinho/                              controllers.Carrinho.addItemAoCarrinho(id: Long)
+GET /removeCarrinho/                        controllers.Carrinho.remItemDoCarrinho(id: Long)
 GET /mostraCarrinho/                        controllers.Application.mostraCarrinho()
 
 # Map static resources from the /public folder to the /assets URL path
